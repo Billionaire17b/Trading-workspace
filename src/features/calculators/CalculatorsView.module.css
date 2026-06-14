@@ -1,0 +1,310 @@
+/* ── Shared tab nav ──────────────────────────────────────── */
+.header { margin-bottom: 20px; }
+.title { font-size: 24px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.03em; }
+.subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+.tabNav {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: var(--bg-dashboard);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.tabNav::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+
+.tabBtn {
+  flex: 1;
+  min-width: 120px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.tabBtn:hover { color: var(--text-primary); background: var(--surface-hover); }
+
+.tabBtnActive {
+  background: rgba(34, 211, 238, 0.08);
+  color: var(--accent-cyan);
+  border-color: rgba(34, 211, 238, 0.25);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.1);
+}
+
+/* ── Shared form elements ───────────────────────────────── */
+.calcSection {
+  padding: 28px;
+  background: var(--bg-dashboard);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.calcTitle { font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
+.calcSubtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 767px) { .formGrid { grid-template-columns: 1fr; } }
+
+.formGroup { display: flex; flex-direction: column; gap: 6px; }
+
+.formLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.formInput {
+  padding: 12px 14px;
+  background: var(--surface-input);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  -moz-appearance: textfield;
+}
+
+.formInput::-webkit-inner-spin-button,
+.formInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.formInput:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+.formInput::placeholder { color: var(--text-faint); }
+
+.formSelect {
+  padding: 12px 14px;
+  background: var(--bg-content);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.formSelect:focus { border-color: var(--accent-cyan); }
+
+.btnRow { display: flex; gap: 12px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
+
+.calcBtn {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  color: var(--accent-cyan);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calcBtn:hover { background: rgba(34, 211, 238, 0.1); box-shadow: var(--shadow-glow-cyan); }
+
+.resetBtn {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.resetBtn:hover { border-color: var(--border-primary); color: var(--text-secondary); }
+
+/* ── Results ────────────────────────────────────────────── */
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-secondary);
+  animation: fadeIn 0.4s ease;
+}
+
+@media (max-width: 640px) { .resultsGrid { grid-template-columns: 1fr; } }
+
+.resultCard {
+  padding: 16px;
+  background: rgba(56, 189, 248, 0.05);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  border-radius: var(--radius-md);
+}
+
+.resultLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.resultValue { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-top: 4px; }
+.resultUnit { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Aesthetic Number Input / Stepper ─────────────────────── */
+.stepperGroup { display: flex; flex-direction: column; gap: 6px; }
+
+.stepper {
+  display: flex;
+  align-items: stretch;
+  background: var(--surface-input);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  overflow: hidden;
+  height: 46px;
+}
+
+.stepper:focus-within {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+.stepperInput {
+  flex: 1;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  padding: 0 8px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.stepperInput::-webkit-inner-spin-button,
+.stepperInput::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none; }
+.stepperInput::placeholder { color: var(--text-faint); font-weight: 400; }
+
+.stepBtn {
+  width: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.stepBtn:hover {
+  color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.stepBtn:active {
+  background: rgba(34, 211, 238, 0.15);
+}
+
+.stepBtnLeft { border-right: 1px solid var(--border-secondary); }
+.stepBtnRight { border-left: 1px solid var(--border-secondary); }
+
+.futuresResult {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(56, 189, 248, 0.06));
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.futuresResultAmount {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+.futuresResultNote {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* ── Consistency: progress bar ──────────────────────────── */
+.progressBarWrap {
+  height: 6px;
+  background: var(--surface-input);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-teal));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.statusCard {
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 12px;
+  border: 1px solid;
+}
+
+.statusPass {
+  background: rgba(45, 212, 191, 0.08);
+  border-color: rgba(45, 212, 191, 0.25);
+  color: var(--accent-teal);
+}
+
+.statusFail {
+  background: rgba(251, 113, 133, 0.08);
+  border-color: rgba(251, 113, 133, 0.25);
+  color: var(--accent-rose);
+}

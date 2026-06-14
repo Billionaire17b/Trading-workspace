@@ -1,0 +1,130 @@
+
+
+--- NEW INPUT ---
+<USER_REQUEST>
+<!DOCTYPE html>
+<html lang="en">
+  <head><script id="aura-preview-performance-controller">
+(function() {
+if (window.__auraPreviewPerformanceController) return;
+const nativeRequestAnimationFrame = window.requestAnimationFrame
+? window.requestAnimationFrame.bind(window)
+: function(callback) { return window.setTimeout(function() { callback(Date.now()); }, 16); };
+const nativeCancelAnimationFrame = window.cancelAnimationFrame
+? window.cancelAnimationFrame.bind(window)
+: window.clearTimeout.bind(window);
+const nativeSetInterval = window.setInterval.bind(window);
+let paused = false;
+let nextFrameId = 1;
+const frameRecords = new Map();
+const pausedFrameCallbacks = new Map();
+const style = document.createElement('style');
+style.id = 'aura-preview-performance-style';
+style.textContent = [
+'html[data-aura-preview-paused="true"] *,',
+'html[data-aura-preview-paused="true"] *::before,',
+'html[data-aura-preview-paused="true"] *::after {',
+'  animation-play-state: paused !important;',
+
+
+--- NEW INPUT ---
+<USER_REQUEST>
+proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T12:06:14+05:30.
+</ADDITIONAL_METADATA>
+
+--- NEW INPUT ---
+<USER_REQUEST>
+continue everything
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T12:14:13+05:30.
+</ADDITIONAL_METADATA>
+
+--- NEW INPUT ---
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T12:23:24+05:30.
+</ADDITIONAL_METADATA>
+
+--- NEW INPUT ---
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T12:25:33+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Opus 4.6 (Thinking) to Claude Sonnet 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+
+--- NEW INPUT ---
+<USER_REQUEST>
+in calculators add these two calculators and in psychology hub add these things
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futures Calculator</title>
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-soft: #cbd5e1;
+            --accent1: #22d3ee;
+            --accent2: #a78bfa;
+        }
+
+        body {
+            height: 100vh;
+            background: #05070b;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            color: var(--text-main);
+        }
+
+        /* WRAPPER */
+        .bg-wrapper {
+            position: relative;
+            width: 100%;
+      
+
+--- NEW INPUT ---
+<USER_REQUEST>
+continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T12:56:10+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Sonnet 4.6 (Thinking) to Gemini 3.1 Pro (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+
+--- NEW INPUT ---
+<USER_REQUEST>
+totally 34 trading tips i gave i need all that and also remove that journal tab
+
+and in calculators page remove position size calculator
+
+and in all the textboxes the increase and decrease button is not that good make it aesthetic
+and in futures calculator the increase and decrese buttons are not that good make it aesthetic 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-08T13:01:08+05:30.
+</ADDITIONAL_METADATA>

@@ -1,0 +1,127 @@
+<USER_REQUEST>
+in calculators add these two calculators and in psychology hub add these things
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futures Calculator</title>
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-soft: #cbd5e1;
+            --accent1: #22d3ee;
+            --accent2: #a78bfa;
+        }
+
+        body {
+            height: 100vh;
+            background: #05070b;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            color: var(--text-main);
+        }
+
+        /* WRAPPER */
+        .bg-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ---------------- MOVING GRADIENT GLOW ---------------- */
+
+        .bg-glow {
+            position: absolute;
+            width: 1200px;
+            height: 1200px;
+            border-radius: 50%;
+            filter: blur(180px);
+            opacity: .45;
+        }
+
+        .bg-glow.one {
+            background: radial-gradient(circle, #00ff9c, transparent 70%);
+            top: -300px;
+            left: -300px;
+            animation: moveGlowOne 25s infinite alternate ease-in-out;
+        }
+
+        .bg-glow.two {
+            background: radial-gradient(circle, #00ffa6, transparent 70%);
+            bottom: -300px;
+            right: -300px;
+            animation: moveGlowTwo 20s infinite alternate ease-in-out reverse;
+        }
+
+        @keyframes moveGlowOne {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30vw, 20vh) scale(1.2);
+            }
+
+            66% {
+    
+<truncated 45214 bytes>
+| 0);
+            const s = specs[instrument.value];
+
+            if (!c) {
+                result.textContent = "$0.00";
+                details.textContent = `1 point = $${s.point} | 1 tick = $${s.tick}`;
+                return;
+            }
+
+            const total = c * ((p * s.point) + (t * s.tick));
+            result.textContent = `$${total.toFixed(2)} USD`;
+            details.textContent = `1 point = $${s.point} | 1 tick = $${s.tick}`;
+        }
+
+        let holdTimer;
+        function hold(id, step) {
+            change(id, step);
+            holdTimer = setInterval(() => change(id, step), 120);
+        }
+        function release() { clearInterval(holdTimer); }
+        function change(id, step) {
+            const input = document.getElementById(id);
+            input.value = Math.max(0, (+input.value || 0) + step);
+            calculate();
+        }
+
+        /* CONSISTENCY RULE CALCULATOR LOGIC */
+        document.getElementById("calculateBtn").addEventListener("click", function () {
+            const totalNetProfit = parseFloat(document.getElementById("totalNetProfit").value) || 0;
+            const bestDayProfit = parseFloat(document.getElementById("bestDayProfit").value) || 0;
+            const limitPercent = parseFloat(document.getElementById("consistencyRuleLimit").value) || 40;
+
+            const accountSize = parseFloat(document.getElementById("accountSize").value) || 0;
+            const profitTargetPercent = parseFloat(document.getElementById("profitTargetPercent").value) || 0;
+
+            if (totalNetProfit <= 0 || bestDayProfit <= 0) {
+                alert("Please enter Total Net Profit and Best Trading Day Profit.");
+                return;
+            }
+
+            const consistencyScore = (bestDayProfit / totalNetProfit) * 100;
+            const requiredTotalProfit = bestDayProfit / (limitPercent / 100);
+            const progres
+<truncated 6681 bytes>
+
+NOTE: The output was truncated because it was too long. Use a more targeted query or a smaller range to get the information you need.
