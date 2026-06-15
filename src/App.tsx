@@ -6,6 +6,7 @@ import CalculatorsView from './features/calculators/CalculatorsView';
 import PsychologyView from './features/psychology/PsychologyView';
 import ChecklistView from './features/checklist/ChecklistView';
 import NotesView from './features/notes/NotesView';
+import TweetSnapView from './features/tweetsnap/TweetSnapView';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="psychology" element={<PsychologyView />} />
             <Route path="checklist" element={<ChecklistView />} />
             <Route path="notes" element={<NotesView />} />
+            <Route path="tweetsnap" element={<TweetSnapView />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

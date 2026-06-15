@@ -14,6 +14,7 @@ const pageTitles: Record<string, string> = {
   '/dashboard/psychology': 'Psychology',
   '/dashboard/checklist': 'Checklist',
   '/dashboard/notes': 'Notes',
+  '/dashboard/tweetsnap': 'Tweet Snap',
 };
 
 export default function Topbar({ onMenuClick }: TopbarProps) {

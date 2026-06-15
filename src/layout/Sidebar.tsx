@@ -44,6 +44,13 @@ const NotesIcon = (
   </svg>
 );
 
+const SnapIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+    <circle cx="12" cy="13" r="4" />
+  </svg>
+);
+
 const LogoutIcon = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -74,9 +81,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <p className={styles.brandSub}>Workspace v1.0</p>
           </div>
 
-          {/* Tools Navigation */}
+          {/* Trading Tools Navigation */}
           <div className={styles.navGroup}>
-            <p className={styles.sectionLabel}>Tools</p>
+            <p className={styles.sectionLabel}>Trading Tools</p>
             <nav className={styles.navList}>
               <NavItem
                 icon={CalcIcon}
@@ -100,6 +107,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 icon={NotesIcon}
                 label="Notes"
                 to="/dashboard/notes"
+                onClick={onClose}
+              />
+            </nav>
+          </div>
+
+          {/* Additional Tools Navigation */}
+          <div className={styles.navGroup}>
+            <p className={styles.sectionLabel}>Additional Tools</p>
+            <nav className={styles.navList}>
+              <NavItem
+                icon={SnapIcon}
+                label="Tweet Snap"
+                to="/dashboard/tweetsnap"
                 onClick={onClose}
               />
             </nav>
