@@ -7,4 +7,7 @@ export default defineConfig({
   server: {
     allowedHosts: ['.ngrok-free.dev', 'straddle-sulphuric-monoxide.ngrok-free.dev'],
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+  },
 })
