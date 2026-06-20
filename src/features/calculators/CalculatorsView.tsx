@@ -83,6 +83,7 @@ function StepperInput({
           className={styles.stepperInput} type="number" placeholder={placeholder}
           value={value}
           onChange={e => onChange(e.target.value)}
+          step="any"
         />
         <button
           className={`${styles.stepBtn} ${styles.stepBtnRight}`}
@@ -110,9 +111,9 @@ function FuturesCalc() {
   const [points,     setPoints]     = useState<string>('0');
   const [ticks,      setTicks]      = useState<string>('0');
   const spec = SPECS[instrument];
-  const c = parseInt(contracts) || 0;
-  const p = parseInt(points) || 0;
-  const t = parseInt(ticks) || 0;
+  const c = parseFloat(contracts) || 0;
+  const p = parseFloat(points) || 0;
+  const t = parseFloat(ticks) || 0;
   const total = c * (p * spec.point + t * spec.tick);
 
   const reset = () => { setContracts('0'); setPoints('0'); setTicks('0'); };
