@@ -3,6 +3,7 @@ import ClickSpark from './components/ClickSpark';
 import AccessPage from './pages/AccessPage';
 import DashboardPage from './pages/DashboardPage';
 import CalculatorsView from './features/calculators/CalculatorsView';
+import PayoutView from './features/payout/PayoutView';
 import PsychologyView from './features/psychology/PsychologyView';
 import ChecklistView from './features/checklist/ChecklistView';
 import NotesView from './features/notes/NotesView';
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />}>
             <Route index element={<Navigate to="calculators" replace />} />
             <Route path="calculators" element={<CalculatorsView />} />
+            <Route path="payout" element={<PayoutView />} />
             <Route path="psychology" element={<PsychologyView />} />
             <Route path="checklist" element={<ChecklistView />} />
             <Route path="notes" element={<NotesView />} />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
@@ -25,6 +25,19 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
   const { theme, toggleTheme } = useTheme();
 
   const title = pageTitles[location.pathname] || 'Dashboard';
+
+  const userAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userAreaRef.current && !userAreaRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [menuOpen]);
 
   const handleLogout = () => {
     setAuthed(false);
@@ -65,7 +78,7 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
           )}
         </button>
 
-        <div className={styles.userAreaWrapper}>
+        <div className={styles.userAreaWrapper} ref={userAreaRef}>
           <div className={styles.userArea} onClick={() => setMenuOpen(!menuOpen)}>
             <Avatar name="Blaze" size={32} />
             <div className={styles.userInfo}>
