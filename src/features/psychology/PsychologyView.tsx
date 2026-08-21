@@ -51,7 +51,7 @@ function TipsTab() {
       </div>
       <div className={styles.rulesGrid}>
         {TRADING_RULES.map((rule, idx) => (
-          <div key={idx} className={styles.ruleCard}>
+          <div key={idx} className={styles.ruleCard} style={{ '--i': idx } as React.CSSProperties}>
             <div className={styles.ruleNum}>{String(idx + 1).padStart(2, '0')}</div>
             <div className={styles.ruleText}>{rule}</div>
           </div>

@@ -9,6 +9,7 @@ interface IconButtonProps {
 
 export default function IconButton({ children, onClick, title, style }: IconButtonProps) {
   const [hovered, setHovered] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
   const baseStyle: CSSProperties = {
     width: 36,
@@ -22,6 +23,7 @@ export default function IconButton({ children, onClick, title, style }: IconButt
     color: hovered ? 'var(--accent-cyan)' : 'var(--text-secondary)',
     cursor: 'pointer',
     transition: 'all var(--transition-fast)',
+    transform: pressed ? 'scale(0.9)' : hovered ? 'scale(1.05)' : 'scale(1)',
     ...style,
   };
 
@@ -31,7 +33,9 @@ export default function IconButton({ children, onClick, title, style }: IconButt
       title={title}
       style={baseStyle}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseLeave={() => { setHovered(false); setPressed(false); }}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
     >
       {children}
     </button>

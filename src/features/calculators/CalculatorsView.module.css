@@ -1,66 +1,96 @@
-/* ── Shared tab nav ──────────────────────────────────────── */
-.header { margin-bottom: 20px; }
-.title { font-size: 24px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.03em; }
+/* ── Shared header ─────────────────────────────────────── */
+.header { margin-bottom: var(--space-5); }
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
 .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
+/* ── Segmented tab nav ──────────────────────────────────── */
 .tabNav {
   display: flex;
   gap: 4px;
-  padding: 6px;
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  margin-bottom: 24px;
+  padding: 4px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  position: relative;
 }
-.tabNav::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+.tabNav::-webkit-scrollbar { display: none; }
 
 .tabBtn {
   flex: 1;
   min-width: 120px;
   min-height: 44px;
-  padding: 10px 16px;
-  border-radius: var(--radius-sm);
+  padding: 10px var(--space-4);
+  border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-muted);
   background: transparent;
-  border: 1px solid transparent;
+  border: none;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-base);
   white-space: nowrap;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
-.tabBtn:hover { color: var(--text-primary); background: var(--surface-hover); }
+.tabBtn:hover { color: var(--text-primary); }
 
 .tabBtnActive {
-  background: rgba(34, 211, 238, 0.08);
+  background: rgba(34, 211, 238, 0.1);
   color: var(--accent-cyan);
-  border-color: rgba(34, 211, 238, 0.25);
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.1);
+  box-shadow:
+    0 0 12px rgba(34, 211, 238, 0.08),
+    inset 0 0 0 1px rgba(34, 211, 238, 0.2);
+  font-weight: 600;
 }
 
-/* ── Shared form elements ───────────────────────────────── */
+/* ── Calc section card ─────────────────────────────────── */
 .calcSection {
-  padding: 28px;
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  animation: fadeIn 0.3s ease;
+  padding: var(--space-8);
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  animation: cardEntrance 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition:
+    box-shadow var(--transition-slow),
+    border-color var(--transition-slow),
+    background-color var(--transition-theme);
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.calcSection:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-primary);
+}
 
-.calcTitle { font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
-.calcSubtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
+.calcTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+.calcSubtitle { font-size: 13px; color: var(--text-muted); margin-bottom: var(--space-6); }
+
+/* ── Form grid ─────────────────────────────────────────── */
 .formGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 @media (max-width: 767px) { .formGrid { grid-template-columns: 1fr; } }
@@ -75,15 +105,18 @@
   letter-spacing: 0.06em;
 }
 
+/* ── Inputs ────────────────────────────────────────────── */
 .formInput {
-  padding: 12px 14px;
+  padding: var(--space-3) 14px;
   background: var(--surface-input);
   border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow 0.25s ease;
   -moz-appearance: textfield;
 }
 
@@ -95,21 +128,23 @@
 
 .formInput:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.1),
+    0 0 12px rgba(34, 211, 238, 0.06);
 }
 
 .formInput::placeholder { color: var(--text-faint); }
 
 .formSelect {
-  padding: 12px 14px;
+  padding: var(--space-3) 14px;
   background: var(--bg-content);
   border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
   cursor: pointer;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow 0.25s ease;
   -webkit-appearance: none;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -118,29 +153,43 @@
   padding-right: 36px;
 }
 
-.formSelect:focus { border-color: var(--accent-cyan); }
+.formSelect:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
 
-.btnRow { display: flex; gap: 12px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
+/* ── Buttons ───────────────────────────────────────────── */
+.btnRow { display: flex; gap: var(--space-3); margin-top: var(--space-5); align-items: center; flex-wrap: wrap; }
 
 .calcBtn {
-  padding: 12px 24px;
+  padding: var(--space-3) var(--space-6);
   background: transparent;
   border: 1px solid var(--accent-cyan);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--accent-cyan);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    all var(--transition-fast),
+    transform var(--transition-fast);
 }
 
-.calcBtn:hover { background: rgba(34, 211, 238, 0.1); box-shadow: var(--shadow-glow-cyan); }
+.calcBtn:hover {
+  background: rgba(34, 211, 238, 0.1);
+  box-shadow: var(--shadow-glow-cyan);
+  transform: translateY(-1px);
+}
+
+.calcBtn:active {
+  transform: translateY(0) scale(0.98);
+}
 
 .resetBtn {
-  padding: 12px 24px;
+  padding: var(--space-3) var(--space-6);
   background: transparent;
   border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-muted);
   font-size: 13px;
   font-weight: 500;
@@ -148,26 +197,38 @@
   transition: all var(--transition-fast);
 }
 
-.resetBtn:hover { border-color: var(--border-primary); color: var(--text-secondary); }
+.resetBtn:hover {
+  border-color: var(--border-primary);
+  color: var(--text-secondary);
+  background: var(--surface-hover);
+}
 
-/* ── Results ────────────────────────────────────────────── */
+/* ── Results grid ──────────────────────────────────────── */
 .resultsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 24px;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
   border-top: 1px solid var(--border-secondary);
-  animation: fadeIn 0.4s ease;
 }
 
 @media (max-width: 640px) { .resultsGrid { grid-template-columns: 1fr; } }
 
 .resultCard {
-  padding: 16px;
-  background: rgba(56, 189, 248, 0.05);
-  border: 1px solid rgba(56, 189, 248, 0.12);
-  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: rgba(34, 211, 238, 0.04);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  animation: cardEntrance 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.resultCard:hover {
+  border-color: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.06);
 }
 
 .resultLabel {
@@ -178,10 +239,15 @@
   letter-spacing: 0.08em;
 }
 
-.resultValue { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-top: 4px; }
+.resultValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
 .resultUnit { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-/* ── Aesthetic Number Input / Stepper ─────────────────────── */
+/* ── Stepper ───────────────────────────────────────────── */
 .stepperGroup { display: flex; flex-direction: column; gap: 6px; }
 
 .stepper {
@@ -189,15 +255,17 @@
   align-items: stretch;
   background: var(--surface-input);
   border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast), box-shadow 0.25s ease;
   overflow: hidden;
   height: 46px;
 }
 
 .stepper:focus-within {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.1),
+    0 0 12px rgba(34, 211, 238, 0.06);
 }
 
 .stepperInput {
@@ -210,7 +278,7 @@
   font-size: 15px;
   font-weight: 500;
   outline: none;
-  padding: 0 8px;
+  padding: 0 var(--space-2);
   -moz-appearance: textfield;
   appearance: textfield;
 }
@@ -242,69 +310,86 @@
 
 .stepBtn:active {
   background: rgba(34, 211, 238, 0.15);
+  transform: scale(0.92);
 }
 
 .stepBtnLeft { border-right: 1px solid var(--border-secondary); }
 .stepBtnRight { border-left: 1px solid var(--border-secondary); }
 
+/* ── Futures result ────────────────────────────────────── */
 .futuresResult {
-  margin-top: 24px;
-  padding: 20px;
-  border-radius: var(--radius-md);
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
   text-align: center;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(56, 189, 248, 0.06));
-  border: 1px solid rgba(34, 211, 238, 0.2);
-  animation: fadeIn 0.3s ease;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(56, 189, 248, 0.04));
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  animation: cardEntrance 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: box-shadow var(--transition-slow);
+}
+
+.futuresResult:hover {
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.08);
 }
 
 .futuresResultAmount {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
   color: var(--accent-cyan);
   letter-spacing: -0.02em;
-  text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+  text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-fast);
 }
 
 .futuresResultNote {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }
 
-/* ── Consistency: progress bar ──────────────────────────── */
+/* ── Progress bar ──────────────────────────────────────── */
 .progressBarWrap {
   height: 6px;
   background: var(--surface-input);
   border-radius: 3px;
   overflow: hidden;
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }
 
 .progressBarFill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent-cyan), var(--accent-teal));
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2);
 }
 
+/* ── Status card ───────────────────────────────────────── */
 .statusCard {
-  padding: 14px 20px;
-  border-radius: var(--radius-md);
+  padding: 14px var(--space-5);
+  border-radius: var(--radius-lg);
   text-align: center;
   font-size: 14px;
   font-weight: 600;
-  margin-top: 12px;
+  margin-top: var(--space-3);
   border: 1px solid;
+  animation: cardEntrance 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .statusPass {
-  background: rgba(45, 212, 191, 0.08);
-  border-color: rgba(45, 212, 191, 0.25);
+  background: rgba(45, 212, 191, 0.06);
+  border-color: rgba(45, 212, 191, 0.2);
   color: var(--accent-teal);
 }
 
 .statusFail {
-  background: rgba(251, 113, 133, 0.08);
-  border-color: rgba(251, 113, 133, 0.25);
+  background: rgba(251, 113, 133, 0.06);
+  border-color: rgba(251, 113, 133, 0.2);
   color: var(--accent-rose);
+}
+
+@media (max-width: 480px) {
+  .calcSection { padding: var(--space-5); }
+  .futuresResultAmount { font-size: 28px; }
 }

@@ -2,12 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ClickSpark from './components/ClickSpark';
 import AccessPage from './pages/AccessPage';
 import DashboardPage from './pages/DashboardPage';
-import CalculatorsView from './features/calculators/CalculatorsView';
-import PayoutView from './features/payout/PayoutView';
-import PsychologyView from './features/psychology/PsychologyView';
-import ChecklistView from './features/checklist/ChecklistView';
-import NotesView from './features/notes/NotesView';
-import TweetSnapView from './features/tweetsnap/TweetSnapView';
+import { lazy } from 'react';
+
+const CalculatorsView = lazy(() => import('./features/calculators/CalculatorsView'));
+const PayoutView = lazy(() => import('./features/payout/PayoutView'));
+const PsychologyView = lazy(() => import('./features/psychology/PsychologyView'));
+const ChecklistView = lazy(() => import('./features/checklist/ChecklistView'));
+const NotesView = lazy(() => import('./features/notes/NotesView'));
+const TweetSnapView = lazy(() => import('./features/tweetsnap/TweetSnapView'));
 
 export default function App() {
   return (

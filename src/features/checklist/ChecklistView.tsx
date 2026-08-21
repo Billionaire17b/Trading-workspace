@@ -93,11 +93,12 @@ export default function ChecklistView() {
 
       {/* Items */}
       <div className={styles.checklist}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div
             key={item.id}
             className={`${styles.item} ${item.checked ? styles.itemChecked : ''}`}
             onClick={() => toggleItem(item.id)}
+            style={{ '--i': index } as React.CSSProperties}
           >
             <div className={`${styles.checkbox} ${item.checked ? styles.checkboxChecked : ''}`}>
               {item.checked && (
@@ -125,6 +126,7 @@ export default function ChecklistView() {
       {/* Add item */}
       <form className={styles.addItemForm} onSubmit={addItem}>
         <input
+          type="text"
           className={styles.addInput}
           placeholder="Add a custom checklist item..."
           value={newItem}

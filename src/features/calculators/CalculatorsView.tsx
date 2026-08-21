@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { useAnimatedNumber } from '../../hooks/useAnimatedNumber';
 import styles from './CalculatorsView.module.css';
 
 /* ── Types ──────────────────────────────────────────────── */
@@ -80,7 +81,7 @@ function StepperInput({
       <label className={styles.formLabel}>{label}</label>
       <div className={styles.stepper}>
         <input
-          className={styles.stepperInput} type="number" placeholder={placeholder}
+          className={styles.stepperInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder={placeholder}
           value={value}
           onChange={e => onChange(e.target.value)}
           step="any"
@@ -102,6 +103,12 @@ function StepperInput({
       </div>
     </div>
   );
+}
+
+/* ── Animated total display ────────────────────────────── */
+function AnimatedTotal({ value }: { value: number }) {
+  const display = useAnimatedNumber(value, 350, 2);
+  return <>${display}</>;
 }
 
 /* ── Futures Calculator ─────────────────────────────────── */
@@ -163,7 +170,7 @@ function FuturesCalc() {
 
       <div className={styles.futuresResult}>
         <div className={styles.futuresResultAmount}>
-          ${total.toFixed(2)} USD
+          <AnimatedTotal value={total} /> USD
         </div>
         <div className={styles.futuresResultNote}>
           {c} contract{c !== 1 ? 's' : ''} × ({p} pts + {t} ticks) on {spec.label}
@@ -217,27 +224,27 @@ function ConsistencyCalc() {
       <div className={styles.formGrid}>
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Account Size (Optional)</label>
-          <input className={styles.formInput} type="number" placeholder="e.g. 50000"
+          <input className={styles.formInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder="e.g. 50000"
             value={accountSize} onChange={e => setAccountSize(e.target.value)} />
         </div>
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Profit Target % (Optional)</label>
-          <input className={styles.formInput} type="number" placeholder="e.g. 10"
+          <input className={styles.formInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder="e.g. 10"
             value={profitTargetPct} onChange={e => setProfitTargetPct(e.target.value)} />
         </div>
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Total Net Profit ($)</label>
-          <input className={styles.formInput} type="number" placeholder="e.g. 2000"
+          <input className={styles.formInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder="e.g. 2000"
             value={totalNetProfit} onChange={e => setTotalNetProfit(e.target.value)} />
         </div>
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Best Day Profit ($)</label>
-          <input className={styles.formInput} type="number" placeholder="e.g. 600"
+          <input className={styles.formInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder="e.g. 600"
             value={bestDayProfit} onChange={e => setBestDayProfit(e.target.value)} />
         </div>
         <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
           <label className={styles.formLabel}>Consistency Rule Limit (%)</label>
-          <input className={styles.formInput} type="number" placeholder="40"
+          <input className={styles.formInput} type="number" inputMode="decimal" pattern="[0-9]*" placeholder="40"
             value={limitPct} onChange={e => setLimitPct(e.target.value)} />
         </div>
       </div>

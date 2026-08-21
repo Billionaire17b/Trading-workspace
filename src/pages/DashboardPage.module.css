@@ -2,6 +2,7 @@
   display: flex;
   min-height: 100vh;
   background: var(--bg-dashboard);
+  transition: background-color var(--transition-theme);
 }
 
 .main {
@@ -14,10 +15,11 @@
 
 .content {
   flex: 1;
-  padding: 24px;
+  padding: var(--space-6);
   overflow-y: auto;
   background: var(--bg-content);
-  animation: contentFade 0.3s ease;
+  animation: contentFade 0.35s ease;
+  transition: background-color var(--transition-theme);
 }
 
 @keyframes contentFade {
@@ -31,6 +33,6 @@
 
 @media (max-width: 767px) {
   .content {
-    padding: 16px;
+    padding: var(--space-4);
   }
 }

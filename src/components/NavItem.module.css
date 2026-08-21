@@ -1,0 +1,70 @@
+.navLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition:
+    all var(--transition-fast),
+    transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.navLink:hover {
+  color: var(--text-primary);
+  background: var(--surface-hover);
+  transform: translateX(2px);
+}
+
+.navLinkActive {
+  color: var(--text-primary);
+  background: var(--surface-active);
+  border-color: var(--border-secondary);
+}
+
+.navLinkActive:hover {
+  transform: translateX(0);
+}
+
+/* Animated active indicator bar */
+.activeIndicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--accent-cyan);
+  animation: indicatorIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+}
+
+@keyframes indicatorIn {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 20px;
+    opacity: 1;
+  }
+}
+
+.navIcon {
+  display: flex;
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+.navIconActive {
+  color: var(--accent-cyan);
+}

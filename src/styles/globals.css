@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
   background: var(--bg-page);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
@@ -26,6 +26,9 @@ body {
   overflow-x: hidden;
   line-height: 1.5;
   -webkit-overflow-scrolling: touch;
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme);
 }
 
 #root {
@@ -75,20 +78,21 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
+  transition: background 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.15);
+  background: rgba(15, 23, 42, 0.12);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 23, 42, 0.25);
+  background: rgba(15, 23, 42, 0.22);
 }
 
 /* ============================================
@@ -133,6 +137,17 @@ img {
   }
 }
 
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20% { transform: translateX(-8px); }
@@ -150,6 +165,43 @@ img {
   to { transform: rotate(360deg); }
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes iconRotate {
+  from { transform: rotate(-90deg) scale(0.8); opacity: 0; }
+  to { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes strikethrough {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ============================================
+   STAGGERED ENTRANCE SYSTEM
+   Use --stagger-index on children, e.g.
+   style="--stagger-index: 0" etc.
+   ============================================ */
+
+.stagger-children > * {
+  animation: cardEntrance 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--stagger-index, 0) * 60ms);
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */
@@ -160,4 +212,17 @@ img {
 
 .slide-up {
   animation: slideUp 0.5s ease both;
+}
+
+.card-entrance {
+  animation: cardEntrance 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Theme-transitionable containers */
+.theme-transition {
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme),
+    color var(--transition-theme),
+    box-shadow var(--transition-theme);
 }

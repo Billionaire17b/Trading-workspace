@@ -2,46 +2,57 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 @media (max-width: 640px) {
-  .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
 }
 
-.title { font-size: 24px; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); }
+.title { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
 .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-.actions { display: flex; gap: 12px; }
+.actions { display: flex; gap: var(--space-3); }
 
 .resetAllBtn {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   min-height: 44px;
   font-size: 12px;
   border: 1px solid var(--border-secondary);
   background: transparent;
   color: var(--text-muted);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .resetAllBtn:hover {
-  border-color: rgba(251, 113, 133, 0.4);
+  border-color: rgba(251, 113, 133, 0.35);
   color: var(--accent-rose);
+  background: rgba(251, 113, 133, 0.04);
 }
 
-/* Progress */
+/* ── Progress ──────────────────────────────────────────── */
 .progress {
-  margin-bottom: 24px;
-  padding: 20px;
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xs);
+  animation: cardEntrance 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .progressHeader { display: flex; justify-content: space-between; align-items: baseline; }
-.progressPercent { font-size: 22px; font-weight: 600; color: var(--text-primary); }
+.progressPercent { font-size: 22px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .progressText { font-size: 13px; color: var(--text-secondary); }
 
 .progressBar {
@@ -49,57 +60,84 @@
   background: var(--surface-input);
   border-radius: 3px;
   overflow: hidden;
-  margin-top: 12px;
+  margin-top: var(--space-3);
 }
 
 .progressFill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent-cyan), var(--accent-teal));
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2);
 }
 
-/* Checklist */
+/* ── Checklist ─────────────────────────────────────────── */
 .checklist { display: flex; flex-direction: column; gap: 4px; }
 
 .item {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  padding: 14px var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-lg);
+  transition:
+    all var(--transition-fast),
+    box-shadow var(--transition-slow),
+    transform var(--transition-fast);
   cursor: pointer;
   user-select: none;
+  animation: cardEntrance 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
 }
 
-.item:hover { border-color: var(--border-accent); }
-.itemChecked { opacity: 0.6; }
+.item:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-xs);
+  transform: translateX(2px);
+}
 
+.itemChecked {
+  opacity: 0.55;
+}
+
+.itemChecked:hover {
+  transform: translateX(0);
+}
+
+/* ── Checkbox ──────────────────────────────────────────── */
 .checkbox {
   width: 22px;
   height: 22px;
-  border-radius: 6px;
+  border-radius: 7px;
   border: 2px solid var(--border-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all var(--transition-fast);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   background: transparent;
 }
 
 .checkboxChecked {
   background: var(--accent-cyan);
   border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
+  animation: checkmark 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0.7); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 .itemText {
   font-size: 14px;
   color: var(--text-primary);
   flex: 1;
+  transition: color var(--transition-fast);
 }
 
 .itemTextChecked {
@@ -114,58 +152,63 @@
   color: var(--text-faint);
   cursor: pointer;
   font-size: 14px;
-  padding: 4px 8px;
+  padding: 4px var(--space-2);
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
 }
 
 .item:hover .deleteItemBtn { opacity: 1; }
-.deleteItemBtn:hover { color: var(--accent-rose); }
+.deleteItemBtn:hover { color: var(--accent-rose); background: rgba(251, 113, 133, 0.08); }
 
 @media (max-width: 767px) {
   .deleteItemBtn { opacity: 1; padding: 10px; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
 }
 
-/* Add item */
+/* ── Add item ──────────────────────────────────────────── */
 .addItemForm {
   display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 
 .addInput {
   flex: 1;
-  padding: 12px 14px;
+  padding: var(--space-3) 14px;
   background: var(--surface-input);
   border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow 0.25s ease;
 }
 
 .addInput:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1), 0 0 12px rgba(34, 211, 238, 0.06);
 }
 
 .addInput::placeholder { color: var(--text-faint); }
 
 .addBtn {
-  padding: 12px 20px;
+  padding: var(--space-3) var(--space-5);
   min-height: 44px;
   background: transparent;
   border: 1px solid var(--accent-cyan);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--accent-cyan);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    all var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
 .addBtn:hover {
   background: rgba(34, 211, 238, 0.1);
+  transform: translateY(-1px);
 }
+
+.addBtn:active { transform: translateY(0) scale(0.98); }

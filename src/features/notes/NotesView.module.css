@@ -2,74 +2,88 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 @media (max-width: 640px) {
-  .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
 }
 
-.title { font-size: 24px; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); }
+.title { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
 .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
+/* ── Segmented tab nav ──────────────────────────────────── */
 .tabNav {
   display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  background: rgba(255,255,255,0.03);
+  gap: 4px;
+  margin-top: var(--space-4);
   padding: 4px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-secondary);
+  background: var(--surface-card);
   width: fit-content;
 }
 
 .tabBtn {
-  padding: 6px 16px;
+  padding: 6px var(--space-4);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-muted);
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-base);
 }
 
 .tabBtnActive {
-  background: var(--surface-active);
-  color: var(--text-primary);
+  background: rgba(34, 211, 238, 0.1);
+  color: var(--accent-cyan);
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.2);
+  font-weight: 600;
 }
 
 .addBtn {
-  padding: 10px 20px;
+  padding: 10px var(--space-5);
   min-height: 44px;
   background: transparent;
   border: 1px solid var(--accent-cyan);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--accent-cyan);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    all var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
 .addBtn:hover {
   background: rgba(34, 211, 238, 0.1);
   box-shadow: var(--shadow-glow-cyan);
+  transform: translateY(-1px);
 }
 
-/* Container */
+.addBtn:active { transform: translateY(0) scale(0.98); }
+
+/* ── Container ─────────────────────────────────────────── */
 .container {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 0;
   min-height: calc(100vh - 200px);
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  animation: fadeSlideIn 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  animation: cardEntrance 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 767px) {
@@ -78,16 +92,16 @@
   .hideMobile { display: none !important; }
 }
 
-/* Notes list */
+/* ── Notes list ────────────────────────────────────────── */
 .notesList {
-  border-right: 1px solid var(--border-secondary);
+  border-right: 1px solid var(--border-subtle);
   overflow-y: auto;
   max-height: calc(100vh - 200px);
 }
 
 .noteItem {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-secondary);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
   cursor: pointer;
   transition: all var(--transition-fast);
   border-left: 2px solid transparent;
@@ -102,7 +116,7 @@
 
 .noteItemTitle {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
   overflow: hidden;
@@ -124,17 +138,17 @@
   white-space: nowrap;
 }
 
-/* Editor */
+/* ── Editor ────────────────────────────────────────────── */
 .editor {
-  padding: 24px;
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .editorTitleInput {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   background: transparent;
   border: none;
   color: var(--text-primary);
@@ -165,52 +179,53 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-secondary);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
 }
 
-.charCount { font-size: 11px; color: var(--text-faint); }
+.charCount { font-size: 11px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .deleteNoteBtn {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   font-size: 12px;
   background: transparent;
-  border: 1px solid rgba(251, 113, 133, 0.3);
+  border: 1px solid rgba(251, 113, 133, 0.25);
   color: var(--accent-rose);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .deleteNoteBtn:hover {
-  background: rgba(251, 113, 133, 0.1);
+  background: rgba(251, 113, 133, 0.08);
+  border-color: rgba(251, 113, 133, 0.4);
 }
 
-/* No selection / empty */
+/* ── No selection / empty ──────────────────────────────── */
 .noSelection {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px;
+  padding: var(--space-16);
   color: var(--text-muted);
   text-align: center;
 }
 
 .empty {
   text-align: center;
-  padding: 60px 24px;
+  padding: var(--space-16) var(--space-6);
   color: var(--text-muted);
-  animation: fadeSlideIn 0.3s ease;
+  animation: cardEntrance 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.emptyIcon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
-.emptyText { font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary); }
+.emptyIcon { font-size: 48px; margin-bottom: var(--space-4); opacity: 0.2; }
+.emptyText { font-size: 15px; font-weight: 600; margin-bottom: var(--space-2); color: var(--text-secondary); }
 .emptySubtext { font-size: 13px; color: var(--text-muted); }
 
 .mobileBack {
   display: none;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   font-size: 13px;
   color: var(--accent-cyan);
   cursor: pointer;
@@ -224,46 +239,50 @@
   .mobileBack { display: flex; min-height: 44px; }
 }
 
-/* Library Grid */
+/* ── Library Grid ──────────────────────────────────────── */
 .libraryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 20px;
-  padding: 12px 0;
-  animation: fadeSlideIn 0.3s ease;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-5);
+  padding: var(--space-3) 0;
+  animation: cardEntrance 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .fileCard {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 16px 12px;
-  background: var(--bg-dashboard);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl);
+  transition:
+    all var(--transition-fast),
+    box-shadow var(--transition-slow),
+    transform var(--transition-fast);
   cursor: pointer;
   text-decoration: none;
 }
 
 .fileCard:hover {
-  background: var(--surface-hover);
+  background: var(--surface-card-hover);
   border-color: var(--border-accent);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 .fileIcon {
   width: 70px;
   height: 90px;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05), rgba(34, 211, 238, 0.15));
-  border: 1px solid rgba(34, 211, 238, 0.3);
-  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.04), rgba(34, 211, 238, 0.12));
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-sm);
   position: relative;
   transition: all var(--transition-fast);
 }
@@ -297,25 +316,21 @@
   overflow: hidden;
 }
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+/* ── PDF Viewer ────────────────────────────────────────── */
 .pdfViewer {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   height: calc(100vh - 160px);
-  animation: fadeSlideIn 0.3s ease;
-  margin-top: 16px;
+  animation: cardEntrance 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  margin-top: var(--space-4);
 }
 
 .pdfScrollWrapper {
   flex: 1;
   width: 100%;
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl);
   background: var(--surface-input);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -325,12 +340,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
-  gap: 16px;
+  padding: var(--space-4);
+  gap: var(--space-4);
 }
 
 .pdfPage {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-radius: 4px;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }

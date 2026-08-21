@@ -3,19 +3,23 @@
   align-items: center;
   justify-content: space-between;
   height: 60px;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--border-primary);
-  background: var(--bg-dashboard);
+  padding: 0 var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   position: sticky;
   top: 0;
   z-index: 30;
-  backdrop-filter: blur(12px);
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
 }
 
 .left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .menuBtn {
@@ -37,6 +41,10 @@
   border-color: var(--border-secondary);
 }
 
+.menuBtn:active {
+  transform: scale(0.94);
+}
+
 @media (max-width: 1023px) {
   .menuBtn {
     display: flex;
@@ -53,7 +61,7 @@
 .right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .themeBtn {
@@ -68,6 +76,8 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
 }
 
 .themeBtn:hover {
@@ -76,11 +86,20 @@
   color: var(--accent-cyan);
 }
 
+.themeBtn:active {
+  transform: scale(0.9);
+}
+
+/* Animate the icon on render */
+.themeBtn svg {
+  animation: iconRotate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .userArea {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 8px;
+  padding: 6px var(--space-2);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -126,9 +145,9 @@
   background: var(--bg-dashboard);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-  padding: 8px;
-  animation: fadeSlideIn 0.2s ease;
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  animation: dropdownIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 100;
 }
 
@@ -137,7 +156,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px var(--space-3);
   border-radius: var(--radius-sm);
   font-size: 13px;
   font-weight: 500;
@@ -151,10 +170,16 @@
 .dropdownItem:hover {
   background: rgba(251, 113, 133, 0.08);
   color: var(--accent-rose);
-  border-color: rgba(251, 113, 133, 0.2);
+  border-color: rgba(251, 113, 133, 0.15);
 }
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

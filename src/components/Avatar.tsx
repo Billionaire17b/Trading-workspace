@@ -24,8 +24,10 @@ export default function Avatar({ name, size = 32 }: AvatarProps) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 0 0 2px var(--border-secondary)',
+    boxShadow: '0 0 0 2px var(--border-secondary), 0 0 12px rgba(34, 211, 238, 0.15)',
     flexShrink: 0,
+    transition: 'box-shadow 0.3s ease, transform 0.2s ease',
+    cursor: 'pointer',
   };
 
   return <div style={style}>{initials}</div>;

@@ -70,6 +70,8 @@ export default function PayoutView() {
               <div className={styles.customInputInline}>
                 <input
                   type="number"
+                  inputMode="decimal"
+                  pattern="[0-9]*"
                   className={styles.customInlineField}
                   value={monthlyReturn}
                   min={0}
@@ -148,6 +150,8 @@ export default function PayoutView() {
               <div className={styles.customInputRow}>
                 <input
                   type="number"
+                  inputMode="decimal"
+                  pattern="[0-9]*"
                   className={styles.customInput}
                   value={profitSplit}
                   min={0}

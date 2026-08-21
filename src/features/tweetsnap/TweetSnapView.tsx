@@ -172,7 +172,7 @@ export default function TweetSnapView() {
           <div>
             <label className={styles.fieldLabel}>Post URL</label>
             <input
-              type="text"
+              type="url"
               className={styles.fieldInput}
               placeholder="https://x.com/user/status/..."
               value={postUrl}
