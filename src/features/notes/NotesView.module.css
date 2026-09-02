@@ -443,3 +443,55 @@
   color: var(--text-muted);
   font-size: 14px;
 }
+
+/* ── Viewer Controls & Fullscreen ──────────────────────── */
+.viewerControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  width: 100%;
+}
+
+.fullscreenBtn {
+  background: var(--surface-card);
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.fullscreenBtn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+
+.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  background: var(--bg-page) !important;
+  margin: 0 !important;
+  padding: var(--space-4) !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.fullscreen .pdfScrollWrapper,
+.fullscreen .pptViewerWrapper {
+  flex: 1 !important;
+  height: 100% !important;
+  max-height: calc(100vh - 80px) !important;
+}
