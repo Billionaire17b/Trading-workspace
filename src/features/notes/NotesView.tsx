@@ -61,7 +61,6 @@ export default function NotesView() {
   const [pptSlideImages, setPptSlideImages] = useState<string[]>([]);
   const [pptLoading, setPptLoading] = useState(false);
   const [pptError, setPptError] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [notes, setNotes] = useState<Note[]>(loadNotes);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileEditing, setMobileEditing] = useState(false);
@@ -195,35 +194,13 @@ export default function NotesView() {
       {view === 'library' ? (
         activeFile ? (
           activeFile.fileType === 'pdf' ? (
-          <div className={`${styles.pdfViewer} ${isFullscreen ? styles.fullscreen : ''}`}>
-            <div className={styles.viewerControls}>
-              <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setIsFullscreen(false); }} style={{ display: 'flex' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-                Back to Library
-              </button>
-              <button className={styles.fullscreenBtn} onClick={() => setIsFullscreen(!isFullscreen)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  {isFullscreen ? (
-                    <>
-                      <polyline points="4 14 10 14 10 20" />
-                      <polyline points="20 10 14 10 14 4" />
-                      <line x1="14" y1="10" x2="21" y2="3" />
-                      <line x1="3" y1="21" x2="10" y2="14" />
-                    </>
-                  ) : (
-                    <>
-                      <polyline points="15 3 21 3 21 9" />
-                      <polyline points="9 21 3 21 3 15" />
-                      <line x1="21" y1="3" x2="14" y2="10" />
-                      <line x1="3" y1="21" x2="10" y2="14" />
-                    </>
-                  )}
-                </svg>
-                {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-              </button>
-            </div>
+          <div className={styles.pdfViewer}>
+            <button className={styles.mobileBack} onClick={() => setActiveFile(null)} style={{ display: 'flex' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Back to Library
+            </button>
             <div className={styles.pdfScrollWrapper}>
               <Document
                 file={`/${activeFile.filename}`}
@@ -245,35 +222,13 @@ export default function NotesView() {
             </div>
           </div>
           ) : (
-          <div className={`${styles.pdfViewer} ${isFullscreen ? styles.fullscreen : ''}`}>
-            <div className={styles.viewerControls}>
-              <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setPptSlideImages([]); setPptError(null); setIsFullscreen(false); }} style={{ display: 'flex' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-                Back to Library
-              </button>
-              <button className={styles.fullscreenBtn} onClick={() => setIsFullscreen(!isFullscreen)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  {isFullscreen ? (
-                    <>
-                      <polyline points="4 14 10 14 10 20" />
-                      <polyline points="20 10 14 10 14 4" />
-                      <line x1="14" y1="10" x2="21" y2="3" />
-                      <line x1="3" y1="21" x2="10" y2="14" />
-                    </>
-                  ) : (
-                    <>
-                      <polyline points="15 3 21 3 21 9" />
-                      <polyline points="9 21 3 21 3 15" />
-                      <line x1="21" y1="3" x2="14" y2="10" />
-                      <line x1="3" y1="21" x2="10" y2="14" />
-                    </>
-                  )}
-                </svg>
-                {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-              </button>
-            </div>
+          <div className={styles.pdfViewer}>
+            <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setPptSlideImages([]); setPptError(null); }} style={{ display: 'flex' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Back to Library
+            </button>
             <div className={styles.pdfScrollWrapper}>
               {pptLoading ? (
                 <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)' }}>Loading presentation...</div>
