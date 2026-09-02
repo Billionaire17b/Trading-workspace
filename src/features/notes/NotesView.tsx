@@ -60,6 +60,7 @@ export default function NotesView() {
   const [numPages, setNumPages] = useState<number>();
   const [pptSlideImages, setPptSlideImages] = useState<string[]>([]);
   const [pptLoading, setPptLoading] = useState(false);
+  const [pptError, setPptError] = useState<string | null>(null);
   const [notes, setNotes] = useState<Note[]>(loadNotes);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileEditing, setMobileEditing] = useState(false);
@@ -118,10 +119,21 @@ export default function NotesView() {
     setActiveFile(file);
     if (file.fileType === 'ppt') {
       setPptLoading(true);
+      setPptError(null);
       setPptSlideImages([]);
       try {
         const response = await fetch(`/${file.filename}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
         const buffer = await response.arrayBuffer();
+        
+        // Detect if it's a Git LFS pointer instead of a zip archive (PPTX)
+        const textBytes = new Uint8Array(buffer.slice(0, 50));
+        const headerText = new TextDecoder().decode(textBytes);
+        if (headerText.includes('version https://git-lfs.github.com')) {
+          throw new Error('This file is a Git LFS pointer. Your hosting provider (like Vercel/Netlify) needs Git LFS enabled to download the actual presentation.');
+        }
+
         const handler = new PptxHandler();
         const data = await handler.load(buffer);
         
@@ -145,9 +157,11 @@ export default function NotesView() {
             }
           }
         }
+        if (images.length === 0) throw new Error('No images found in presentation slides.');
         setPptSlideImages(images);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load PPT:', err);
+        setPptError(err.message || 'Failed to load presentation');
       } finally {
         setPptLoading(false);
       }
@@ -209,7 +223,7 @@ export default function NotesView() {
           </div>
           ) : (
           <div className={styles.pdfViewer}>
-            <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setPptSlideImages([]); }} style={{ display: 'flex' }}>
+            <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setPptSlideImages([]); setPptError(null); }} style={{ display: 'flex' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
@@ -218,6 +232,11 @@ export default function NotesView() {
             <div className={styles.pdfScrollWrapper}>
               {pptLoading ? (
                 <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)' }}>Loading presentation...</div>
+              ) : pptError ? (
+                <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>
+                  <div style={{ marginBottom: 8, fontWeight: 500 }}>Failed to load presentation</div>
+                  <div style={{ fontSize: '0.9em', opacity: 0.8, maxWidth: 600, margin: '0 auto' }}>{pptError}</div>
+                </div>
               ) : pptSlideImages.length > 0 ? (
                 <div className={styles.pdfDocument}>
                   {pptSlideImages.map((imgSrc, index) => (
