@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { PptxHandler } from 'pptx-viewer-core';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import styles from './NotesView.module.css';
@@ -17,7 +16,7 @@ interface Note {
 
 const STORAGE_KEY = 'tw-notes';
 
-type FileItem = { id: string; title: string; filename: string; fileType: 'pdf' | 'ppt' };
+type FileItem = { id: string; title: string; filename: string; fileType: 'pdf' | 'ppt'; extractedFolder?: string };
 type FolderItem = { id: string; title: string; type: 'folder'; children: FileItem[] };
 type LibraryItem = FileItem | FolderItem;
 
@@ -37,9 +36,9 @@ const LIBRARY_ITEMS: LibraryItem[] = [
     title: 'MMXM notes',
     type: 'folder',
     children: [
-      { id: 'ppt1', title: 'MMXM Trader Posts', filename: 'MMXM TRADER POSTS.pptx', fileType: 'ppt' },
-      { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt' },
-      { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt' },
+      { id: 'ppt1', title: 'MMXM Trader Posts', filename: 'MMXM TRADER POSTS.pptx', fileType: 'ppt', extractedFolder: 'mmxm-posts' },
+      { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt', extractedFolder: 'mmxm-course' },
+      { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt', extractedFolder: 'x-model' },
     ]
   }
 ];
@@ -123,42 +122,22 @@ export default function NotesView() {
       setPptError(null);
       setPptSlideImages([]);
       try {
-        const response = await fetch(`/${file.filename}`);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
-        const buffer = await response.arrayBuffer();
-        
-        // Detect if it's a Git LFS pointer instead of a zip archive (PPTX)
-        const textBytes = new Uint8Array(buffer.slice(0, 50));
-        const headerText = new TextDecoder().decode(textBytes);
-        if (headerText.includes('version https://git-lfs.github.com')) {
-          throw new Error('This file is a Git LFS pointer. Your hosting provider (like Vercel/Netlify) needs Git LFS enabled to download the actual presentation.');
+        if (!file.extractedFolder) {
+          throw new Error('This presentation has not been pre-extracted. Cannot load fast view.');
         }
-
-        const handler = new PptxHandler();
-        const data = await handler.load(buffer);
         
-        // Extract one image per slide (these PPTs have full-slide picture elements)
-        const images: string[] = [];
-        for (const slide of data.slides) {
-          for (const element of slide.elements) {
-            const el = element as any;
-            if (el.type === 'image' || el.type === 'picture') {
-              // Try imageData first (inline data), then imagePath via getImageData
-              if (el.imageData) {
-                images.push(el.imageData);
-                break;
-              } else if (el.imagePath) {
-                const imgData = await handler.getImageData(el.imagePath);
-                if (imgData) {
-                  images.push(imgData);
-                  break;
-                }
-              }
-            }
-          }
+        // Fetch the pre-extracted metadata
+        const response = await fetch(`/ppt-extracted/${file.extractedFolder}/meta.json`);
+        if (!response.ok) throw new Error(`HTTP ${response.status} - Could not find metadata for presentation.`);
+        
+        const meta = await response.json();
+        if (!meta.slides || meta.slides.length === 0) {
+          throw new Error('No images found in presentation slides.');
         }
-        if (images.length === 0) throw new Error('No images found in presentation slides.');
+        
+        // Construct image URLs
+        const images = meta.slides.map((imgName: string) => `/ppt-extracted/${file.extractedFolder}/${imgName}`);
+        
         setPptSlideImages(images);
       } catch (err: any) {
         console.error('Failed to load PPT:', err);
