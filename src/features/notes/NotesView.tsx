@@ -35,7 +35,11 @@ const LIBRARY_ITEMS: LibraryItem[] = [
     id: 'folder-mmxm-notes',
     title: 'MMXM notes',
     type: 'folder',
-    children: []
+    children: [
+      { id: 'ppt1', title: 'MMXM Trader Posts', filename: 'MMXM TRADER POSTS.pptx', fileType: 'ppt', extractedFolder: 'mmxm-posts' },
+      { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt', extractedFolder: 'mmxm-course' },
+      { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt', extractedFolder: 'x-model' },
+    ]
   }
 ];
 
