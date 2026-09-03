@@ -53,6 +53,18 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'pdf7', title: 'Past Plays Same Process', filename: '4500px/PastPlaysSameProcess.pdf', fileType: 'pdf' },
       { id: 'pdf8', title: 'Unicorn', filename: '4500px/Unicorn.pdf', fileType: 'pdf' },
     ]
+  },
+  {
+    id: 'folder-juno-trading',
+    title: 'Juno Trading',
+    type: 'folder',
+    children: [
+      { id: 'pdf9', title: 'Feb 24 Unicorn Model Data', filename: 'JunoTrading/Feb_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
+      { id: 'pdf10', title: 'Jan 24 Unicorn Model Data', filename: 'JunoTrading/Jan_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
+      { id: 'pdf11', title: 'Smooth Edges', filename: 'JunoTrading/Smooth Edges - byJunotrading.pdf', fileType: 'pdf' },
+      { id: 'pdf12', title: 'Stat Map Unicorn Juno', filename: 'JunoTrading/Stat-Map-Unicorn-Juno.pdf', fileType: 'pdf' },
+      { id: 'pdf13', title: 'Unicorn Model Data Sep 2025', filename: 'JunoTrading/Unicorn_Model_Data_Sep2025.pdf', fileType: 'pdf' },
+    ]
   }
 ];
 
