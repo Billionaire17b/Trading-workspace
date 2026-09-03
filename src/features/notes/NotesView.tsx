@@ -41,6 +41,50 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt' },
       { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt' },
     ]
+  },
+  {
+    id: 'folder-4500px',
+    title: '4500px',
+    type: 'folder',
+    children: [
+      { id: 'pdf4', title: 'Crypto Range Trading', filename: '4500px/CryptoRangeTrading.pdf', fileType: 'pdf' },
+      { id: 'pdf5', title: 'March Trades', filename: '4500px/MarchTrades.pdf', fileType: 'pdf' },
+      { id: 'pdf6', title: 'Monthly Recap', filename: '4500px/Monthly recap.pdf', fileType: 'pdf' },
+      { id: 'pdf7', title: 'Past Plays Same Process', filename: '4500px/PastPlaysSameProcess.pdf', fileType: 'pdf' },
+      { id: 'pdf8', title: 'Unicorn', filename: '4500px/Unicorn.pdf', fileType: 'pdf' },
+    ]
+  },
+  {
+    id: 'folder-juno-trading',
+    title: 'Juno Trading',
+    type: 'folder',
+    children: [
+      { id: 'pdf9', title: 'Feb 24 Unicorn Model Data', filename: 'JunoTrading/Feb_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
+      { id: 'pdf10', title: 'Jan 24 Unicorn Model Data', filename: 'JunoTrading/Jan_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
+      { id: 'pdf11', title: 'Smooth Edges', filename: 'JunoTrading/Smooth Edges - byJunotrading.pdf', fileType: 'pdf' },
+      { id: 'pdf12', title: 'Stat Map Unicorn Juno', filename: 'JunoTrading/Stat-Map-Unicorn-Juno.pdf', fileType: 'pdf' },
+      { id: 'pdf13', title: 'Unicorn Model Data Sep 2025', filename: 'JunoTrading/Unicorn_Model_Data_Sep2025.pdf', fileType: 'pdf' },
+    ]
+  },
+  {
+    id: 'folder-mmxm-pdfs',
+    title: "MMXM PDF's",
+    type: 'folder',
+    children: [
+      { id: 'pdf14', title: 'Breakdown Weekly PO3', filename: "MMXM PDF's/Breakdown Weekly PO3.pdf", fileType: 'pdf' },
+      { id: 'pdf15', title: 'DPT', filename: "MMXM PDF's/DPT (1) (1).pdf", fileType: 'pdf' },
+      { id: 'pdf16', title: 'EP 6 (QS)', filename: "MMXM PDF's/EP 6 (QS).pdf", fileType: 'pdf' },
+      { id: 'pdf17', title: 'Handbook Booklet', filename: "MMXM PDF's/Handbook Booklet.pdf", fileType: 'pdf' },
+      { id: 'pdf18', title: 'Lesson 1', filename: "MMXM PDF's/Lesson 1.pdf", fileType: 'pdf' },
+      { id: 'pdf19', title: 'Lesson 2', filename: "MMXM PDF's/Lesson 2.pdf", fileType: 'pdf' },
+      { id: 'pdf20', title: 'Lesson 3', filename: "MMXM PDF's/Lesson 3.pdf", fileType: 'pdf' },
+      { id: 'pdf21', title: 'Lesson 4', filename: "MMXM PDF's/Lesson 4.pdf", fileType: 'pdf' },
+      { id: 'pdf22', title: 'Lesson 5', filename: "MMXM PDF's/Lesson 5.pdf", fileType: 'pdf' },
+      { id: 'pdf23', title: 'Relative Strength Analysis - OTE', filename: "MMXM PDF's/Relative Strength Analysis - OTE-1.pdf", fileType: 'pdf' },
+      { id: 'pdf24', title: "The OTE Trader's Checklist", filename: "MMXM PDF's/The OTE Trader's Checklist.pdf", fileType: 'pdf' },
+      { id: 'pdf25', title: 'The Sequence', filename: "MMXM PDF's/The Sequence (1).pdf", fileType: 'pdf' },
+      { id: 'pdf26', title: 'Timeframe Alignment', filename: "MMXM PDF's/Timeframe alignment PDF.pdf", fileType: 'pdf' },
+    ]
   }
 ];
 
