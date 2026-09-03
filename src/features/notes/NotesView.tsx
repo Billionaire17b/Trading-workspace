@@ -61,6 +61,8 @@ export default function NotesView() {
   const [pptSlideImages, setPptSlideImages] = useState<string[]>([]);
   const [pptLoading, setPptLoading] = useState(false);
   const [pptError, setPptError] = useState<string | null>(null);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [loadingStage, setLoadingStage] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [notes, setNotes] = useState<Note[]>(loadNotes);
@@ -227,11 +229,44 @@ export default function NotesView() {
       setPptLoading(true);
       setPptError(null);
       setPptSlideImages([]);
+      setLoadProgress(0);
+      setLoadingStage('Downloading');
       try {
         const response = await fetch(`/${file.filename}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
-        const buffer = await response.arrayBuffer();
+        // Stream-based download with progress tracking
+        const contentLength = response.headers.get('content-length');
+        const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+        let buffer: ArrayBuffer;
+
+        if (totalBytes > 0 && response.body) {
+          const reader = response.body.getReader();
+          const chunks: Uint8Array[] = [];
+          let receivedBytes = 0;
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            receivedBytes += value.length;
+            // Download is 0-60% of the overall progress
+            setLoadProgress(Math.round((receivedBytes / totalBytes) * 60));
+          }
+
+          const allChunks = new Uint8Array(receivedBytes);
+          let position = 0;
+          for (const chunk of chunks) {
+            allChunks.set(chunk, position);
+            position += chunk.length;
+          }
+          buffer = allChunks.buffer;
+        } else {
+          // Fallback: no content-length, simulate progress
+          setLoadProgress(30);
+          buffer = await response.arrayBuffer();
+          setLoadProgress(60);
+        }
         
         // Detect if it's a Git LFS pointer instead of a zip archive (PPTX)
         const textBytes = new Uint8Array(buffer.slice(0, 50));
@@ -240,12 +275,18 @@ export default function NotesView() {
           throw new Error('This file is a Git LFS pointer. Your hosting provider (like Vercel/Netlify) needs Git LFS enabled to download the actual presentation.');
         }
 
+        setLoadingStage('Parsing slides');
+        setLoadProgress(65);
         const handler = new PptxHandler();
         const data = await handler.load(buffer);
+        setLoadProgress(75);
         
         // Extract one image per slide (these PPTs have full-slide picture elements)
+        setLoadingStage('Extracting images');
         const images: string[] = [];
-        for (const slide of data.slides) {
+        const totalSlides = data.slides.length;
+        for (let si = 0; si < totalSlides; si++) {
+          const slide = data.slides[si];
           for (const element of slide.elements) {
             const el = element as any;
             if (el.type === 'image' || el.type === 'picture') {
@@ -262,8 +303,12 @@ export default function NotesView() {
               }
             }
           }
+          // Image extraction is 75-98% of overall progress
+          setLoadProgress(75 + Math.round(((si + 1) / totalSlides) * 23));
         }
         if (images.length === 0) throw new Error('No images found in presentation slides.');
+        setLoadProgress(100);
+        setLoadingStage('Done');
         setPptSlideImages(images);
       } catch (err: any) {
         console.error('Failed to load PPT:', err);
@@ -372,8 +417,29 @@ export default function NotesView() {
             >
               {pptLoading ? (
                 <div className={styles.pptLoading}>
-                  <div className={styles.pptSpinner} />
-                  <span>Loading presentation...</span>
+                  <div className={styles.pptProgressRing}>
+                    <svg className={styles.pptProgressSvg} viewBox="0 0 120 120">
+                      <defs>
+                        <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#22d3ee" />
+                          <stop offset="100%" stopColor="#a855f7" />
+                        </linearGradient>
+                      </defs>
+                      <circle className={styles.pptProgressTrack} cx="60" cy="60" r="52" />
+                      <circle
+                        className={styles.pptProgressFill}
+                        cx="60" cy="60" r="52"
+                        stroke="url(#progressGrad)"
+                        strokeDasharray={`${2 * Math.PI * 52}`}
+                        strokeDashoffset={`${2 * Math.PI * 52 * (1 - loadProgress / 100)}`}
+                      />
+                    </svg>
+                    <div className={styles.pptProgressPercent}>{loadProgress}%</div>
+                  </div>
+                  <div className={styles.pptProgressLabel}>{loadingStage}</div>
+                  <div className={styles.pptProgressSubLabel}>
+                    {loadProgress < 60 ? 'Fetching file...' : loadProgress < 75 ? 'Processing PPTX...' : loadProgress < 98 ? `Slide ${Math.min(Math.ceil((loadProgress - 75) / 23 * (pptSlideImages.length || 1)) + 1, pptSlideImages.length || 1)}...` : 'Almost ready!'}
+                  </div>
                 </div>
               ) : pptError ? (
                 <div className={styles.pptErrorState}>
