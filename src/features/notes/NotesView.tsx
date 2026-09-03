@@ -71,6 +71,7 @@ export default function NotesView() {
   const saveTimer = useRef<number | undefined>(undefined);
   const pptContainerRef = useRef<HTMLDivElement>(null);
   const pptViewerRef = useRef<HTMLDivElement>(null);
+  const pdfViewerRef = useRef<HTMLDivElement>(null);
   const pdfScrollRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const [containerWidth, setContainerWidth] = useState(Math.min(window.innerWidth - 32, 800));
@@ -148,7 +149,7 @@ export default function NotesView() {
 
   // Fullscreen toggle
   const toggleFullscreen = useCallback(async () => {
-    const el = pptViewerRef.current;
+    const el = activeFile?.fileType === 'pdf' ? pdfViewerRef.current : pptViewerRef.current;
     if (!el) return;
     try {
       if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
@@ -167,7 +168,7 @@ export default function NotesView() {
     } catch (err) {
       console.warn('Fullscreen not supported:', err);
     }
-  }, []);
+  }, [activeFile?.fileType]);
 
   // Sync fullscreen state with browser events
   useEffect(() => {
@@ -345,13 +346,33 @@ export default function NotesView() {
       {view === 'library' ? (
         activeFile ? (
           activeFile.fileType === 'pdf' ? (
-          <div className={styles.pdfViewer}>
-            <button className={styles.pptBackBtn} onClick={() => setActiveFile(null)}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-              Back to Library
-            </button>
+          <div className={`${styles.pdfViewer} ${isFullscreen ? styles.pptFullscreen : ''}`} ref={pdfViewerRef}>
+            <div className={styles.pptTopBar}>
+              <button className={styles.pptBackBtn} onClick={() => { if (isFullscreen) toggleFullscreen(); setActiveFile(null); }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Back
+              </button>
+              <div className={styles.pptSlideTitle}>{activeFile.title}</div>
+              <button className={styles.pptFullscreenBtn} onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>
+                {isFullscreen ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="4 14 8 14 8 18" />
+                    <polyline points="20 10 16 10 16 6" />
+                    <polyline points="14 4 14 8 18 8" />
+                    <polyline points="10 20 10 16 6 16" />
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 3 21 3 21 9" />
+                    <polyline points="9 21 3 21 3 15" />
+                    <polyline points="21 3 14 10" />
+                    <polyline points="3 21 10 14" />
+                  </svg>
+                )}
+              </button>
+            </div>
             <div className={styles.pdfScrollWrapper} ref={pdfScrollRef}>
               <Document
                 file={`/${activeFile.filename}`}
