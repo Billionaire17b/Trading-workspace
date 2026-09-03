@@ -5,8 +5,11 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import styles from './NotesView.module.css';
 
-// Set up pdf.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Set up pdf.js worker (Local worker for Vite to prevent mobile CORS issues)
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 interface Note {
   id: string;
@@ -265,7 +268,7 @@ export default function NotesView() {
       setPptError(null);
       setPptSlideImages([]);
       try {
-        const response = await fetch(`/${file.filename}`);
+        const response = await fetch(encodeURI(`/${file.filename}`));
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
         // Stream-based download with progress tracking
@@ -423,7 +426,7 @@ export default function NotesView() {
             </div>
             <div className={styles.pdfScrollWrapper} ref={pdfScrollRef} onScroll={handlePdfScroll}>
               <Document
-                file={`/${activeFile.filename}`}
+                file={encodeURI(`/${activeFile.filename}`)}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 onLoadProgress={({ loaded, total }) => {
                   if (total > 0) {
@@ -453,6 +456,15 @@ export default function NotesView() {
                       <div className={styles.pptProgressPercent}>{loadProgress}%</div>
                     </div>
                     <div className={styles.pptProgressLabel}>Loading PDF</div>
+                  </div>
+                }
+                error={
+                  <div className={styles.pptErrorState}>
+                    <div className={styles.pptErrorIcon}>⚠️</div>
+                    <div className={styles.pptErrorTitle}>Failed to load PDF</div>
+                    <div className={styles.pptErrorMsg}>
+                      This could be due to network connectivity or an unsupported file format on your device.
+                    </div>
                   </div>
                 }
               >
