@@ -64,6 +64,7 @@ export default function NotesView() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadingStage, setLoadingStage] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentPdfPage, setCurrentPdfPage] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [notes, setNotes] = useState<Note[]>(loadNotes);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -226,6 +227,7 @@ export default function NotesView() {
   const handleFileOpen = async (file: FileItem) => {
     setActiveFile(file);
     setCurrentSlide(0);
+    setCurrentPdfPage(1);
     setLoadProgress(0);
     setLoadingStage('Downloading');
     if (file.fileType === 'ppt') {
@@ -320,6 +322,17 @@ export default function NotesView() {
     }
   };
 
+  const handlePdfScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    if (!numPages) return;
+    const el = e.currentTarget;
+    const pageHeight = el.scrollHeight / numPages;
+    const currentPage = Math.min(
+      numPages,
+      Math.max(1, Math.floor((el.scrollTop + el.clientHeight / 2) / pageHeight) + 1)
+    );
+    setCurrentPdfPage(currentPage);
+  }, [numPages]);
+
   return (
     <div>
       <div className={styles.header}>
@@ -355,6 +368,11 @@ export default function NotesView() {
                 Back
               </button>
               <div className={styles.pptSlideTitle}>{activeFile.title}</div>
+              {numPages ? (
+                <div className={styles.pptSlideCounter}>
+                  {currentPdfPage} / {numPages}
+                </div>
+              ) : null}
               <button className={styles.pptFullscreenBtn} onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>
                 {isFullscreen ? (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -373,7 +391,7 @@ export default function NotesView() {
                 )}
               </button>
             </div>
-            <div className={styles.pdfScrollWrapper} ref={pdfScrollRef}>
+            <div className={styles.pdfScrollWrapper} ref={pdfScrollRef} onScroll={handlePdfScroll}>
               <Document
                 file={`/${activeFile.filename}`}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
