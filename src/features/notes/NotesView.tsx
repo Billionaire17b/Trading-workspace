@@ -5,11 +5,8 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import styles from './NotesView.module.css';
 
-// Set up pdf.js worker (Local worker for Vite to prevent mobile CORS issues)
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+// Set up pdf.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface Note {
   id: string;
@@ -43,30 +40,6 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'ppt1', title: 'MMXM Trader Posts', filename: 'MMXM TRADER POSTS.pptx', fileType: 'ppt' },
       { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt' },
       { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt' },
-    ]
-  },
-  {
-    id: 'folder-4500px',
-    title: '4500px',
-    type: 'folder',
-    children: [
-      { id: 'pdf4', title: 'Crypto Range Trading', filename: '4500px/CryptoRangeTrading.pdf', fileType: 'pdf' },
-      { id: 'pdf5', title: 'March Trades', filename: '4500px/MarchTrades.pdf', fileType: 'pdf' },
-      { id: 'pdf6', title: 'Monthly recap', filename: '4500px/Monthly recap.pdf', fileType: 'pdf' },
-      { id: 'pdf7', title: 'Past Plays Same Process', filename: '4500px/PastPlaysSameProcess.pdf', fileType: 'pdf' },
-      { id: 'pdf8', title: 'Unicorn', filename: '4500px/Unicorn.pdf', fileType: 'pdf' },
-    ]
-  },
-  {
-    id: 'folder-juno-trading',
-    title: 'Juno Trading',
-    type: 'folder',
-    children: [
-      { id: 'pdf9', title: 'Feb 24 Unicorn Model Data', filename: 'JunoTrading/Feb_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
-      { id: 'pdf10', title: 'Jan 24 Unicorn Model Data', filename: 'JunoTrading/Jan_24_Unicorn_Model_Data.pdf', fileType: 'pdf' },
-      { id: 'pdf11', title: 'Smooth Edges', filename: 'JunoTrading/Smooth Edges - byJunotrading.pdf', fileType: 'pdf' },
-      { id: 'pdf12', title: 'Stat Map Unicorn Juno', filename: 'JunoTrading/Stat-Map-Unicorn-Juno.pdf', fileType: 'pdf' },
-      { id: 'pdf13', title: 'Unicorn Model Data Sep 2025', filename: 'JunoTrading/Unicorn_Model_Data_Sep2025.pdf', fileType: 'pdf' },
     ]
   }
 ];
@@ -268,7 +241,7 @@ export default function NotesView() {
       setPptError(null);
       setPptSlideImages([]);
       try {
-        const response = await fetch(encodeURI(`/${file.filename}`));
+        const response = await fetch(`/${file.filename}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
         // Stream-based download with progress tracking
@@ -426,7 +399,7 @@ export default function NotesView() {
             </div>
             <div className={styles.pdfScrollWrapper} ref={pdfScrollRef} onScroll={handlePdfScroll}>
               <Document
-                file={encodeURI(`/${activeFile.filename}`)}
+                file={`/${activeFile.filename}`}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 onLoadProgress={({ loaded, total }) => {
                   if (total > 0) {
@@ -456,15 +429,6 @@ export default function NotesView() {
                       <div className={styles.pptProgressPercent}>{loadProgress}%</div>
                     </div>
                     <div className={styles.pptProgressLabel}>Loading PDF</div>
-                  </div>
-                }
-                error={
-                  <div className={styles.pptErrorState}>
-                    <div className={styles.pptErrorIcon}>⚠️</div>
-                    <div className={styles.pptErrorTitle}>Failed to load PDF</div>
-                    <div className={styles.pptErrorMsg}>
-                      This could be due to network connectivity or an unsupported file format on your device.
-                    </div>
                   </div>
                 }
               >

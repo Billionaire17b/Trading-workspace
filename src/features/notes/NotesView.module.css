@@ -1036,6 +1036,20 @@
   box-shadow: none;
 }
 
+.pptFullscreen .pdfScrollWrapper {
+  border: none;
+  border-radius: 0;
+  background: #000;
+}
+
+[data-theme="light"] .pptFullscreen .pdfScrollWrapper {
+  background: #e8e8ec;
+}
+
+.pptFullscreen .pdfDocument {
+  padding-top: 64px;
+}
+
 .pptFullscreen .pptNavBtn {
   width: 52px;
   height: 52px;
