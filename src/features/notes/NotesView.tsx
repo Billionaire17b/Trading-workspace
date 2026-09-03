@@ -265,7 +265,7 @@ export default function NotesView() {
       setPptError(null);
       setPptSlideImages([]);
       try {
-        const response = await fetch(`/${file.filename}`);
+        const response = await fetch(encodeURI(`/${file.filename}`));
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
         // Stream-based download with progress tracking
@@ -423,7 +423,7 @@ export default function NotesView() {
             </div>
             <div className={styles.pdfScrollWrapper} ref={pdfScrollRef} onScroll={handlePdfScroll}>
               <Document
-                file={`/${activeFile.filename}`}
+                file={encodeURI(`/${activeFile.filename}`)}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                 onLoadProgress={({ loaded, total }) => {
                   if (total > 0) {
