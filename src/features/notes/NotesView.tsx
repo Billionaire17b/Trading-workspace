@@ -41,6 +41,18 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'ppt2', title: "The MMXM Trader's 1st Course - Bread & Butter Approach Notes", filename: 'The MMXM Trader\'s 1st Course Bread & Butter Approach Notes.pptx', fileType: 'ppt' },
       { id: 'ppt3', title: 'The X Model Notes', filename: 'The X Model Notes.pptx', fileType: 'ppt' },
     ]
+  },
+  {
+    id: 'folder-4500px',
+    title: '4500px',
+    type: 'folder',
+    children: [
+      { id: 'pdf4', title: 'Crypto Range Trading', filename: '4500px/CryptoRangeTrading.pdf', fileType: 'pdf' },
+      { id: 'pdf5', title: 'March Trades', filename: '4500px/MarchTrades.pdf', fileType: 'pdf' },
+      { id: 'pdf6', title: 'Monthly recap', filename: '4500px/Monthly recap.pdf', fileType: 'pdf' },
+      { id: 'pdf7', title: 'Past Plays Same Process', filename: '4500px/PastPlaysSameProcess.pdf', fileType: 'pdf' },
+      { id: 'pdf8', title: 'Unicorn', filename: '4500px/Unicorn.pdf', fileType: 'pdf' },
+    ]
   }
 ];
 
