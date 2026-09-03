@@ -184,17 +184,23 @@ export default function NotesView() {
     };
   }, []);
 
-  // Keyboard navigation for PPT slides + Escape for fullscreen
+  // Keyboard navigation for PPT slides + F key for fullscreen
   useEffect(() => {
-    if (!activeFile || activeFile.fileType !== 'ppt' || pptSlideImages.length === 0) return;
+    if (!activeFile) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        nextSlide();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        prevSlide();
-      } else if (e.key === 'f' || e.key === 'F') {
+      // Presentation slide navigation
+      if (activeFile.fileType === 'ppt' && pptSlideImages.length > 0) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          prevSlide();
+        }
+      }
+      
+      // Global fullscreen shortcut
+      if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
       }
     };
