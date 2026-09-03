@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { PptxHandler } from 'pptx-viewer-core';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -61,16 +61,37 @@ export default function NotesView() {
   const [pptSlideImages, setPptSlideImages] = useState<string[]>([]);
   const [pptLoading, setPptLoading] = useState(false);
   const [pptError, setPptError] = useState<string | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [notes, setNotes] = useState<Note[]>(loadNotes);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileEditing, setMobileEditing] = useState(false);
   const saveTimer = useRef<number | undefined>(undefined);
+  const pptContainerRef = useRef<HTMLDivElement>(null);
+  const pptViewerRef = useRef<HTMLDivElement>(null);
+  const pdfScrollRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const [containerWidth, setContainerWidth] = useState(Math.min(window.innerWidth - 32, 800));
 
   const selectedNote = notes.find((n) => n.id === selectedId) || null;
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
   }, [notes]);
+
+  // Track container width for responsive PDF/PPT sizing
+  useEffect(() => {
+    const el = pdfScrollRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        setContainerWidth(Math.min(w - 32, 800));
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [activeFile]);
 
   const createNote = () => {
     const note: Note = {
@@ -115,8 +136,93 @@ export default function NotesView() {
     });
   };
 
+  // PPT slide navigation
+  const goToSlide = useCallback((index: number) => {
+    setCurrentSlide(Math.max(0, Math.min(index, pptSlideImages.length - 1)));
+  }, [pptSlideImages.length]);
+
+  const nextSlide = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
+  const prevSlide = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
+
+  // Fullscreen toggle
+  const toggleFullscreen = useCallback(async () => {
+    const el = pptViewerRef.current;
+    if (!el) return;
+    try {
+      if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+        if (el.requestFullscreen) {
+          await el.requestFullscreen();
+        } else if ((el as any).webkitRequestFullscreen) {
+          await (el as any).webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          await (document as any).webkitExitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.warn('Fullscreen not supported:', err);
+    }
+  }, []);
+
+  // Sync fullscreen state with browser events
+  useEffect(() => {
+    const handleChange = () => {
+      setIsFullscreen(!!(document.fullscreenElement || (document as any).webkitFullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleChange);
+    document.addEventListener('webkitfullscreenchange', handleChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleChange);
+      document.removeEventListener('webkitfullscreenchange', handleChange);
+    };
+  }, []);
+
+  // Keyboard navigation for PPT slides + Escape for fullscreen
+  useEffect(() => {
+    if (!activeFile || activeFile.fileType !== 'ppt' || pptSlideImages.length === 0) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeFile, pptSlideImages.length, nextSlide, prevSlide, toggleFullscreen]);
+
+  // Touch swipe handlers for PPT slides
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    
+    // Only trigger if horizontal swipe is dominant and threshold met
+    if (absDeltaX > 50 && absDeltaX > absDeltaY * 1.5) {
+      if (deltaX < 0) nextSlide();
+      else prevSlide();
+    }
+    touchStartRef.current = null;
+  }, [nextSlide, prevSlide]);
+
   const handleFileOpen = async (file: FileItem) => {
     setActiveFile(file);
+    setCurrentSlide(0);
     if (file.fileType === 'ppt') {
       setPptLoading(true);
       setPptError(null);
@@ -195,13 +301,13 @@ export default function NotesView() {
         activeFile ? (
           activeFile.fileType === 'pdf' ? (
           <div className={styles.pdfViewer}>
-            <button className={styles.mobileBack} onClick={() => setActiveFile(null)} style={{ display: 'flex' }}>
+            <button className={styles.pptBackBtn} onClick={() => setActiveFile(null)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
               Back to Library
             </button>
-            <div className={styles.pdfScrollWrapper}>
+            <div className={styles.pdfScrollWrapper} ref={pdfScrollRef}>
               <Document
                 file={`/${activeFile.filename}`}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -213,7 +319,7 @@ export default function NotesView() {
                     key={`page_${index + 1}`}
                     pageNumber={index + 1}
                     className={styles.pdfPage}
-                    width={Math.min(window.innerWidth - 32, 800)}
+                    width={containerWidth}
                     renderTextLayer={false}
                     renderAnnotationLayer={false}
                   />
@@ -222,42 +328,114 @@ export default function NotesView() {
             </div>
           </div>
           ) : (
-          <div className={styles.pdfViewer}>
-            <button className={styles.mobileBack} onClick={() => { setActiveFile(null); setPptSlideImages([]); setPptError(null); }} style={{ display: 'flex' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-              Back to Library
-            </button>
-            <div className={styles.pdfScrollWrapper}>
-              {pptLoading ? (
-                <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)' }}>Loading presentation...</div>
-              ) : pptError ? (
-                <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>
-                  <div style={{ marginBottom: 8, fontWeight: 500 }}>Failed to load presentation</div>
-                  <div style={{ fontSize: '0.9em', opacity: 0.8, maxWidth: 600, margin: '0 auto' }}>{pptError}</div>
+          <div className={`${styles.pptViewer} ${isFullscreen ? styles.pptFullscreen : ''}`} ref={pptViewerRef}>
+            <div className={styles.pptTopBar}>
+              <button className={styles.pptBackBtn} onClick={() => { if (isFullscreen) toggleFullscreen(); setActiveFile(null); setPptSlideImages([]); setPptError(null); setCurrentSlide(0); }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Back
+              </button>
+              {pptSlideImages.length > 0 && (
+                <div className={styles.pptSlideTitle}>{activeFile.title}</div>
+              )}
+              {pptSlideImages.length > 0 && (
+                <div className={styles.pptSlideCounter}>
+                  {currentSlide + 1} / {pptSlideImages.length}
                 </div>
-              ) : pptSlideImages.length > 0 ? (
-                <div className={styles.pdfDocument}>
-                  {pptSlideImages.map((imgSrc, index) => (
-                    <img
-                      key={`slide_${index + 1}`}
-                      src={imgSrc}
-                      alt={`Slide ${index + 1}`}
-                      className={styles.pdfPage}
-                      style={{ maxWidth: Math.min(window.innerWidth - 32, 800), width: '100%', height: 'auto' }}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)' }}>No slides found</div>
+              )}
+              {pptSlideImages.length > 0 && (
+                <button className={styles.pptFullscreenBtn} onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>
+                  {isFullscreen ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="4 14 8 14 8 18" />
+                      <polyline points="20 10 16 10 16 6" />
+                      <polyline points="14 4 14 8 18 8" />
+                      <polyline points="10 20 10 16 6 16" />
+                    </svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 3 21 3 21 9" />
+                      <polyline points="9 21 3 21 3 15" />
+                      <polyline points="21 3 14 10" />
+                      <polyline points="3 21 10 14" />
+                    </svg>
+                  )}
+                </button>
               )}
             </div>
+            <div
+              className={styles.pptViewerWrapper}
+              ref={pptContainerRef}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              {pptLoading ? (
+                <div className={styles.pptLoading}>
+                  <div className={styles.pptSpinner} />
+                  <span>Loading presentation...</span>
+                </div>
+              ) : pptError ? (
+                <div className={styles.pptErrorState}>
+                  <div className={styles.pptErrorIcon}>⚠️</div>
+                  <div className={styles.pptErrorTitle}>Failed to load presentation</div>
+                  <div className={styles.pptErrorMsg}>{pptError}</div>
+                </div>
+              ) : pptSlideImages.length > 0 ? (
+                <>
+                  <div className={styles.pptSlideStage}>
+                    <img
+                      key={`slide_${currentSlide}`}
+                      src={pptSlideImages[currentSlide]}
+                      alt={`Slide ${currentSlide + 1}`}
+                      className={styles.pptSlideImage}
+                      draggable={false}
+                    />
+                  </div>
+                  {/* Navigation arrows - hidden on very small screens, use swipe there */}
+                  <button
+                    className={`${styles.pptNavBtn} ${styles.pptNavPrev}`}
+                    onClick={prevSlide}
+                    disabled={currentSlide === 0}
+                    aria-label="Previous slide"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <button
+                    className={`${styles.pptNavBtn} ${styles.pptNavNext}`}
+                    onClick={nextSlide}
+                    disabled={currentSlide === pptSlideImages.length - 1}
+                    aria-label="Next slide"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 6 15 12 9 18" />
+                    </svg>
+                  </button>
+                </>
+              ) : (
+                <div className={styles.pptLoading}>No slides found</div>
+              )}
+            </div>
+            {/* Bottom dot navigation for mobile/iPad */}
+            {pptSlideImages.length > 1 && (
+              <div className={styles.pptDotNav}>
+                {pptSlideImages.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`${styles.pptDot} ${i === currentSlide ? styles.pptDotActive : ''}`}
+                    onClick={() => goToSlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           )
         ) : currentFolder ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <button className={styles.mobileBack} onClick={() => setCurrentFolder(null)} style={{ display: 'flex' }}>
+            <button className={styles.pptBackBtn} onClick={() => setCurrentFolder(null)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
