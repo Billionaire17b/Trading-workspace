@@ -225,12 +225,12 @@ export default function NotesView() {
   const handleFileOpen = async (file: FileItem) => {
     setActiveFile(file);
     setCurrentSlide(0);
+    setLoadProgress(0);
+    setLoadingStage('Downloading');
     if (file.fileType === 'ppt') {
       setPptLoading(true);
       setPptError(null);
       setPptSlideImages([]);
-      setLoadProgress(0);
-      setLoadingStage('Downloading');
       try {
         const response = await fetch(`/${file.filename}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -356,8 +356,36 @@ export default function NotesView() {
               <Document
                 file={`/${activeFile.filename}`}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                onLoadProgress={({ loaded, total }) => {
+                  if (total > 0) {
+                    setLoadProgress(Math.round((loaded / total) * 100));
+                  }
+                }}
                 className={styles.pdfDocument}
-                loading={<div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)' }}>Loading PDF...</div>}
+                loading={
+                  <div className={styles.pptLoading}>
+                    <div className={styles.pptProgressRing}>
+                      <svg className={styles.pptProgressSvg} viewBox="0 0 120 120">
+                        <defs>
+                          <linearGradient id="pdfProgressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#22d3ee" />
+                            <stop offset="100%" stopColor="#38bdf8" />
+                          </linearGradient>
+                        </defs>
+                        <circle className={styles.pptProgressTrack} cx="60" cy="60" r="52" />
+                        <circle
+                          className={styles.pptProgressFill}
+                          cx="60" cy="60" r="52"
+                          stroke="url(#pdfProgressGrad)"
+                          strokeDasharray={`${2 * Math.PI * 52}`}
+                          strokeDashoffset={`${2 * Math.PI * 52 * (1 - loadProgress / 100)}`}
+                        />
+                      </svg>
+                      <div className={styles.pptProgressPercent}>{loadProgress}%</div>
+                    </div>
+                    <div className={styles.pptProgressLabel}>Loading PDF</div>
+                  </div>
+                }
               >
                 {Array.from(new Array(numPages), (_, index) => (
                   <Page
