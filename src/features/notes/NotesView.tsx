@@ -86,7 +86,14 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'pdf26', title: 'Timeframe Alignment', filename: "MMXM-PDFs/Timeframe alignment PDF.pdf", fileType: 'pdf' },
     ]
   },
-  { id: 'ppt4', title: 'Jos7821 Tweets', filename: 'Jos7821 Tweets.pptx', fileType: 'ppt' }
+  {
+    id: 'folder-jos',
+    title: 'Jos',
+    type: 'folder',
+    children: [
+      { id: 'ppt4', title: 'Jos7821 Tweets', filename: 'Jos7821 Tweets.pptx', fileType: 'ppt' },
+    ]
+  }
 ];
 
 function loadNotes(): Note[] {
