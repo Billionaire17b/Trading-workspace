@@ -88,7 +88,7 @@ const LIBRARY_ITEMS: LibraryItem[] = [
   },
   {
     id: 'folder-jos',
-    title: 'Jos',
+    title: 'Jos7821',
     type: 'folder',
     children: [
       { id: 'ppt4', title: 'Jos7821 Tweets', filename: 'Jos7821 Tweets.pptx', fileType: 'ppt' },
