@@ -92,6 +92,7 @@ const LIBRARY_ITEMS: LibraryItem[] = [
     type: 'folder',
     children: [
       { id: 'ppt4', title: 'Jos7821 Tweets', filename: 'Jos7821 Tweets.pptx', fileType: 'ppt' },
+      { id: 'ppt5', title: 'Jos7821 Chart Examples', filename: 'jos7821 chart examples.pptx', fileType: 'ppt' },
     ]
   }
 ];
