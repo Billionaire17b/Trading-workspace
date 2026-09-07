@@ -85,7 +85,8 @@ const LIBRARY_ITEMS: LibraryItem[] = [
       { id: 'pdf25', title: 'The Sequence', filename: "MMXM-PDFs/The Sequence (1).pdf", fileType: 'pdf' },
       { id: 'pdf26', title: 'Timeframe Alignment', filename: "MMXM-PDFs/Timeframe alignment PDF.pdf", fileType: 'pdf' },
     ]
-  }
+  },
+  { id: 'ppt4', title: 'Jos7821 Tweets', filename: 'Jos7821 Tweets.pptx', fileType: 'ppt' }
 ];
 
 function loadNotes(): Note[] {
@@ -649,8 +650,8 @@ export default function NotesView() {
                 }} 
                 className={styles.fileCard}
               >
-                <div className={'type' in item && item.type === 'folder' ? styles.folderIcon : styles.fileIcon}>
-                  {'type' in item && item.type === 'folder' ? '📁' : '📄'}
+                <div className={'type' in item && item.type === 'folder' ? styles.folderIcon : 'fileType' in item && item.fileType === 'ppt' ? styles.pptIcon : styles.fileIcon}>
+                  {'type' in item && item.type === 'folder' ? '📁' : 'fileType' in item && item.fileType === 'ppt' ? '📊' : '📄'}
                 </div>
                 <div className={styles.fileName}>{item.title}</div>
               </div>
