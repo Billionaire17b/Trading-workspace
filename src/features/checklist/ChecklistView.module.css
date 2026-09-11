@@ -68,7 +68,7 @@
   background: linear-gradient(90deg, var(--accent-cyan), var(--accent-teal));
   border-radius: 3px;
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 8px rgba(var(--glow-rgb), 0.2);
 }
 
 /* ── Checklist ─────────────────────────────────────────── */
@@ -123,7 +123,8 @@
 .checkboxChecked {
   background: var(--accent-cyan);
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
+  color: var(--bg-page);
+  box-shadow: 0 0 10px rgba(var(--glow-rgb), 0.25);
   animation: checkmark 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -185,7 +186,7 @@
 
 .addInput:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1), 0 0 12px rgba(34, 211, 238, 0.06);
+  box-shadow: 0 0 0 3px rgba(var(--glow-rgb), 0.1), 0 0 12px rgba(var(--glow-rgb), 0.06);
 }
 
 .addInput::placeholder { color: var(--text-faint); }
@@ -207,7 +208,7 @@
 }
 
 .addBtn:hover {
-  background: rgba(34, 211, 238, 0.1);
+  background: rgba(var(--glow-rgb), 0.1);
   transform: translateY(-1px);
 }
 

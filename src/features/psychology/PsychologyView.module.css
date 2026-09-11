@@ -28,11 +28,11 @@
 .tabBtn:hover { color: var(--text-primary); }
 
 .tabBtnActive {
-  background: rgba(34, 211, 238, 0.1);
+  background: rgba(var(--glow-rgb), 0.1);
   color: var(--accent-cyan);
   box-shadow:
-    0 0 12px rgba(34, 211, 238, 0.08),
-    inset 0 0 0 1px rgba(34, 211, 238, 0.2);
+    0 0 12px rgba(var(--glow-rgb), 0.08),
+    inset 0 0 0 1px rgba(var(--glow-rgb), 0.2);
   font-weight: 600;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .addBtn:hover {
-  background: rgba(34, 211, 238, 0.1);
+  background: rgba(var(--glow-rgb), 0.1);
   box-shadow: var(--shadow-glow-cyan);
   transform: translateY(-1px);
 }
@@ -124,7 +124,7 @@
 
 .formInput:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1), 0 0 12px rgba(34, 211, 238, 0.06);
+  box-shadow: 0 0 0 3px rgba(var(--glow-rgb), 0.1), 0 0 12px rgba(var(--glow-rgb), 0.06);
 }
 .formInput::placeholder { color: var(--text-faint); }
 
@@ -146,7 +146,7 @@
 
 .formTextarea:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1), 0 0 12px rgba(34, 211, 238, 0.06);
+  box-shadow: 0 0 0 3px rgba(var(--glow-rgb), 0.1), 0 0 12px rgba(var(--glow-rgb), 0.06);
 }
 .formTextarea::placeholder { color: var(--text-faint); }
 
@@ -165,7 +165,7 @@
 }
 
 .emotionTag:hover { border-color: var(--border-primary); transform: translateY(-1px); }
-.tagConfident  { border-color: rgba(34,211,238,0.35);  background: rgba(34,211,238,0.08);  color: var(--accent-cyan);    }
+.tagConfident  { border-color: rgba(var(--glow-rgb),0.35);  background: rgba(var(--glow-rgb),0.08);  color: var(--accent-cyan);    }
 .tagFearful    { border-color: rgba(251,113,133,0.35); background: rgba(251,113,133,0.08); color: var(--accent-rose);    }
 .tagGreedy     { border-color: rgba(168,85,247,0.35);  background: rgba(168,85,247,0.08);  color: var(--accent-purple);  }
 .tagDisciplined{ border-color: rgba(45,212,191,0.35);  background: rgba(45,212,191,0.08);  color: var(--accent-teal);    }
@@ -199,7 +199,7 @@
   transition: all var(--transition-fast), transform var(--transition-fast);
 }
 
-.saveBtn:hover { background: rgba(34,211,238,0.1); transform: translateY(-1px); }
+.saveBtn:hover { background: rgba(var(--glow-rgb),0.1); transform: translateY(-1px); }
 
 /* ── Journal entries ─────────────────────────────────────── */
 .entries { display: flex; flex-direction: column; gap: var(--space-3); }
@@ -290,7 +290,7 @@
 
 .ruleCard:hover {
   transform: translateY(-4px);
-  border-color: rgba(34,211,238,0.2);
+  border-color: rgba(var(--glow-rgb),0.2);
   background: var(--surface-card-hover);
   box-shadow: var(--shadow-lg);
 }
@@ -387,10 +387,10 @@
 .actionBoxHighlight { color: #ec4899; font-weight: 700; font-size: 15px; display: block; margin-top: 6px; }
 
 .focusBox {
-  border: 1px solid rgba(34,211,238,0.15);
+  border: 1px solid rgba(var(--glow-rgb),0.15);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  background: rgba(34,211,238,0.03);
+  background: rgba(var(--glow-rgb),0.03);
 }
 
 .focusTitle { color: var(--accent-cyan); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
@@ -426,7 +426,7 @@
   flex-shrink: 0;
 }
 
-.chkItem:hover .chkBox { border-color: var(--accent-cyan); background: rgba(34,211,238,0.06); }
+.chkItem:hover .chkBox { border-color: var(--accent-cyan); background: rgba(var(--glow-rgb),0.06); }
 
 .chkBoxChecked {
   border-color: var(--accent-cyan) !important;
@@ -447,7 +447,7 @@
 
 .askCard:hover {
   border-left-color: var(--accent-cyan);
-  background: rgba(34,211,238,0.04);
+  background: rgba(var(--glow-rgb),0.04);
   transform: translateX(4px);
 }
 
@@ -493,7 +493,7 @@
 .quoteBlock {
   border-left: 4px solid var(--accent-cyan);
   padding: var(--space-6) var(--space-8);
-  background: linear-gradient(90deg, rgba(34,211,238,0.05), transparent);
+  background: linear-gradient(90deg, rgba(var(--glow-rgb),0.05), transparent);
   border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
   transition: border-color var(--transition-theme);
 }
@@ -532,7 +532,7 @@
   background: var(--bg-content);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  border: 1px solid rgba(34,211,238,0.08);
+  border: 1px solid rgba(var(--glow-rgb),0.08);
   border-top: 3px solid var(--accent-cyan);
   font-size: 14px;
   color: var(--text-secondary);
@@ -555,8 +555,8 @@
   text-align: center;
   margin-top: var(--space-8);
   padding: var(--space-6);
-  background: rgba(34,211,238,0.03);
-  border: 1px solid rgba(34,211,238,0.08);
+  background: rgba(var(--glow-rgb),0.03);
+  border: 1px solid rgba(var(--glow-rgb),0.08);
   border-radius: var(--radius-xl);
 }
 
@@ -565,6 +565,6 @@
   color: var(--accent-cyan);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   display: block;
-  text-shadow: 0 0 24px rgba(34, 211, 238, 0.3);
+  text-shadow: 0 0 24px rgba(var(--glow-rgb), 0.3);
 }
 .lockInDiscipline { color: var(--accent-purple); letter-spacing: 0.15em; text-transform: uppercase; font-size: 14px; font-weight: 700; }

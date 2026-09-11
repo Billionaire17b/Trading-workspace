@@ -11,7 +11,7 @@
   transition: background-color var(--transition-theme);
 }
 
-/* Animated gradient glow behind card */
+/* Animated gradient glow behind card — white in dark mode */
 .bgGlow {
   position: absolute;
   top: -250px;
@@ -21,9 +21,9 @@
   height: 700px;
   background: radial-gradient(
     ellipse at center,
-    rgba(34, 211, 238, 0.1) 0%,
-    rgba(59, 130, 246, 0.06) 30%,
-    rgba(168, 85, 247, 0.03) 50%,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(255, 255, 255, 0.01) 50%,
     transparent 70%
   );
   pointer-events: none;
@@ -101,8 +101,8 @@
 .input:focus {
   border-color: var(--accent-cyan);
   box-shadow:
-    0 0 0 3px rgba(34, 211, 238, 0.1),
-    0 0 16px rgba(34, 211, 238, 0.08);
+    0 0 0 3px rgba(255, 255, 255, 0.06),
+    0 0 16px rgba(255, 255, 255, 0.04);
 }
 
 .input::placeholder {
@@ -126,7 +126,7 @@
   position: relative;
   width: 100%;
   padding: 14px;
-  border: 1px solid rgba(34, 211, 238, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
   background: var(--bg-content);
   color: var(--text-primary);
@@ -140,7 +140,7 @@
 
 .submitBtn:hover {
   box-shadow: var(--shadow-glow-cyan);
-  border-color: rgba(34, 211, 238, 0.55);
+  border-color: rgba(255, 255, 255, 0.35);
   transform: translateY(-2px);
 }
 
@@ -154,9 +154,9 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(34, 211, 238, 0.1),
-    rgba(59, 130, 246, 0.05),
-    rgba(168, 85, 247, 0.04)
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
   );
   background-size: 200% 200%;
   animation: gradientShift 4s ease infinite;
@@ -203,4 +203,38 @@
   .card {
     padding: var(--space-8) var(--space-6);
   }
+}
+
+/* Light mode overrides */
+[data-theme="light"] .bgGlow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(9, 9, 11, 0.04) 0%,
+    rgba(9, 9, 11, 0.02) 30%,
+    rgba(9, 9, 11, 0.005) 50%,
+    transparent 70%
+  );
+}
+
+[data-theme="light"] .submitBtn {
+  border-color: rgba(9, 9, 11, 0.15);
+}
+
+[data-theme="light"] .submitBtn:hover {
+  border-color: rgba(9, 9, 11, 0.25);
+}
+
+[data-theme="light"] .input:focus {
+  box-shadow:
+    0 0 0 3px rgba(9, 9, 11, 0.06),
+    0 0 16px rgba(9, 9, 11, 0.04);
+}
+
+[data-theme="light"] .btnGlow {
+  background: linear-gradient(
+    135deg,
+    rgba(9, 9, 11, 0.04),
+    rgba(9, 9, 11, 0.01),
+    transparent
+  );
 }

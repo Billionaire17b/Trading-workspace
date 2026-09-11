@@ -466,8 +466,8 @@ export default function NotesView() {
                       <svg className={styles.pptProgressSvg} viewBox="0 0 120 120">
                         <defs>
                           <linearGradient id="pdfProgressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#22d3ee" />
-                            <stop offset="100%" stopColor="#38bdf8" />
+                            <stop offset="0%" stopColor="var(--progress-start)" />
+                            <stop offset="100%" stopColor="var(--progress-end)" />
                           </linearGradient>
                         </defs>
                         <circle className={styles.pptProgressTrack} cx="60" cy="60" r="52" />
@@ -547,8 +547,8 @@ export default function NotesView() {
                     <svg className={styles.pptProgressSvg} viewBox="0 0 120 120">
                       <defs>
                         <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#22d3ee" />
-                          <stop offset="100%" stopColor="#38bdf8" />
+                          <stop offset="0%" stopColor="var(--progress-start)" />
+                          <stop offset="100%" stopColor="var(--progress-end)" />
                         </linearGradient>
                       </defs>
                       <circle className={styles.pptProgressTrack} cx="60" cy="60" r="52" />

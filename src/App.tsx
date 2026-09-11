@@ -3,6 +3,7 @@ import ClickSpark from './components/ClickSpark';
 import AccessPage from './pages/AccessPage';
 import DashboardPage from './pages/DashboardPage';
 import { lazy } from 'react';
+import { useTheme } from './hooks/useTheme';
 
 const CalculatorsView = lazy(() => import('./features/calculators/CalculatorsView'));
 const PayoutView = lazy(() => import('./features/payout/PayoutView'));
@@ -12,10 +13,11 @@ const NotesView = lazy(() => import('./features/notes/NotesView'));
 const TweetSnapView = lazy(() => import('./features/tweetsnap/TweetSnapView'));
 
 export default function App() {
+  const { theme } = useTheme();
   return (
     <BrowserRouter>
       <ClickSpark
-        sparkColor="#22d3ee"
+        sparkColor={theme === 'light' ? '#09090b' : '#ffffff'}
         sparkSize={10}
         sparkRadius={15}
         sparkCount={8}
