@@ -23,6 +23,7 @@ interface InstrumentSpec {
 const SPECS: Record<string, InstrumentSpec> = {
   NQ:   { label: 'E-mini NQ',        point: 20,    tick: 5      },
   MNQ:  { label: 'Micro NQ',         point: 2,     tick: 0.5    },
+  NNQ:  { label: 'Nano NQ',          point: 0.2,   tick: 0.05   },
   ES:   { label: 'E-mini ES',        point: 50,    tick: 12.5   },
   MES:  { label: 'Micro ES',         point: 5,     tick: 1.25   },
   YM:   { label: 'E-mini YM',        point: 5,     tick: 5      },
