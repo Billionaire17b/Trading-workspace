@@ -24,19 +24,35 @@ const SPECS: Record<string, InstrumentSpec> = {
   NQ:   { label: 'E-mini NQ',        point: 20,    tick: 5      },
   MNQ:  { label: 'Micro NQ',         point: 2,     tick: 0.5    },
   NNQ:  { label: 'Nano NQ',          point: 0.2,   tick: 0.05   },
+  GC:   { label: 'Gold (GC)',        point: 100,   tick: 10     },
+  MGC:  { label: 'Micro Gold (MGC)', point: 10,    tick: 1      },
   ES:   { label: 'E-mini ES',        point: 50,    tick: 12.5   },
   MES:  { label: 'Micro ES',         point: 5,     tick: 1.25   },
+  NES:  { label: 'Nano ES',          point: 0.5,   tick: 0.25   },
   YM:   { label: 'E-mini YM',        point: 5,     tick: 5      },
   MYM:  { label: 'Micro YM',         point: 0.5,   tick: 0.5    },
   RTY:  { label: 'E-mini RTY',       point: 50,    tick: 5      },
   MRTY: { label: 'Micro RTY',        point: 5,     tick: 0.5    },
-  GC:   { label: 'Gold (GC)',        point: 100,   tick: 10     },
-  MGC:  { label: 'Micro Gold (MGC)', point: 10,    tick: 1      },
   SI:   { label: 'Silver (SI)',      point: 50,    tick: 25     },
   MSI:  { label: 'Micro Silver',     point: 5,     tick: 2.5    },
   CL:   { label: 'Crude Oil (CL)',   point: 1000,  tick: 10     },
   MCL:  { label: 'Micro Crude (MCL)',point: 100,   tick: 1      },
 };
+
+interface MarketGroup {
+  label: string;
+  variants: { key: string; size: string }[];
+}
+
+const MARKETS: MarketGroup[] = [
+  { label: 'NQ',     variants: [{ key: 'NQ',   size: 'E-mini' }, { key: 'MNQ',  size: 'Micro' }, { key: 'NNQ', size: 'Nano' }] },
+  { label: 'Gold',   variants: [{ key: 'GC',   size: 'Standard' }, { key: 'MGC', size: 'Micro' }] },
+  { label: 'ES',     variants: [{ key: 'ES',   size: 'E-mini' }, { key: 'MES',  size: 'Micro' }, { key: 'NES', size: 'Nano' }] },
+  { label: 'YM',     variants: [{ key: 'YM',   size: 'E-mini' }, { key: 'MYM',  size: 'Micro' }] },
+  { label: 'RTY',    variants: [{ key: 'RTY',  size: 'E-mini' }, { key: 'MRTY', size: 'Micro' }] },
+  { label: 'Silver', variants: [{ key: 'SI',   size: 'Standard' }, { key: 'MSI', size: 'Micro' }] },
+  { label: 'Crude',  variants: [{ key: 'CL',   size: 'Standard' }, { key: 'MCL', size: 'Micro' }] },
+];
 
 /* ── Stepper Component ────────────────────────────────────── */
 function StepperInput({
@@ -114,10 +130,15 @@ function AnimatedTotal({ value }: { value: number }) {
 
 /* ── Futures Calculator ─────────────────────────────────── */
 function FuturesCalc() {
-  const [instrument, setInstrument] = useState('NQ');
+  const [marketIdx, setMarketIdx] = useState(0);
+  const [variantIdx, setVariantIdx] = useState(0);
   const [contracts,  setContracts]  = useState<string>('0');
   const [points,     setPoints]     = useState<string>('0');
   const [ticks,      setTicks]      = useState<string>('0');
+
+  const market = MARKETS[marketIdx];
+  const variant = market.variants[variantIdx] || market.variants[0];
+  const instrument = variant.key;
   const spec = SPECS[instrument];
   const c = parseFloat(contracts) || 0;
   const p = parseFloat(points) || 0;
@@ -126,6 +147,11 @@ function FuturesCalc() {
 
   const reset = () => { setContracts('0'); setPoints('0'); setTicks('0'); };
 
+  const selectMarket = (idx: number) => {
+    setMarketIdx(idx);
+    setVariantIdx(0); // reset to first variant
+  };
+
   return (
     <div className={styles.calcSection}>
       <div className={styles.calcTitle}>Futures Calculator</div>
@@ -133,16 +159,34 @@ function FuturesCalc() {
 
       <div className={styles.formGrid}>
         <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
-          <label className={styles.formLabel}>Instrument</label>
-          <select
-            className={styles.formSelect}
-            value={instrument}
-            onChange={e => setInstrument(e.target.value)}
-          >
-            {Object.entries(SPECS).map(([key, s]) => (
-              <option key={key} value={key}>{s.label}</option>
+          <label className={styles.formLabel}>Market</label>
+          <div className={styles.pillRow}>
+            {MARKETS.map((m, i) => (
+              <button
+                key={m.label}
+                className={`${styles.pill} ${i === marketIdx ? styles.pillActive : ''}`}
+                onClick={() => selectMarket(i)}
+              >
+                {m.label}
+              </button>
             ))}
-          </select>
+          </div>
+        </div>
+
+        <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+          <label className={styles.formLabel}>Size</label>
+          <div className={styles.pillRow}>
+            {market.variants.map((v, i) => (
+              <button
+                key={v.key}
+                className={`${styles.pill} ${i === variantIdx ? styles.pillActive : ''}`}
+                onClick={() => setVariantIdx(i)}
+              >
+                {v.size}
+                <span className={styles.pillSub}>{v.key}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <StepperInput

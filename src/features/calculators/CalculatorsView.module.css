@@ -158,6 +158,50 @@
   box-shadow: 0 0 0 3px rgba(var(--glow-rgb), 0.1);
 }
 
+/* ── Pill selector ────────────────────────────────────── */
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--surface-input);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.pill:hover {
+  border-color: var(--border-primary);
+  color: var(--text-primary);
+  background: var(--surface-hover);
+}
+
+.pillActive {
+  background: rgba(var(--glow-rgb), 0.12);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(var(--glow-rgb), 0.08);
+}
+
+.pillSub {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+
 /* ── Buttons ───────────────────────────────────────────── */
 .btnRow { display: flex; gap: var(--space-3); margin-top: var(--space-5); align-items: center; flex-wrap: wrap; }
 
