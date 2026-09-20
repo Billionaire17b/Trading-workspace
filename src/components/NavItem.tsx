@@ -7,12 +7,14 @@ interface NavItemProps {
   label: string;
   to: string;
   onClick?: () => void;
+  end?: boolean;
 }
 
-export default function NavItem({ icon, label, to, onClick }: NavItemProps) {
+export default function NavItem({ icon, label, to, onClick, end }: NavItemProps) {
   return (
     <NavLink
       to={to}
+      end={end}
       onClick={onClick}
       className={({ isActive }) =>
         `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`

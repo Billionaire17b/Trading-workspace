@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useTheme } from '../../hooks/useTheme';
+import WakeSlider from '../../components/WakeSlider';
 import styles from './PayoutView.module.css';
 
 /* ── Account size options ───────────────────────────────── */
@@ -15,6 +17,7 @@ const PRESETS: { label: string; return: number }[] = [
 const SPLIT_OPTIONS = [50, 70, 75, 80, 85, 90];
 
 export default function PayoutView() {
+  const { theme } = useTheme();
   const [accountSize, setAccountSize] = useState(50_000);
   const [monthlyReturn, setMonthlyReturn] = useState(3);
   const [profitSplit, setProfitSplit] = useState(90);
@@ -33,7 +36,6 @@ export default function PayoutView() {
 
   const isCustomReturn = !PRESETS.some(p => p.return === monthlyReturn);
   const isCustomSplit = !SPLIT_OPTIONS.includes(profitSplit);
-  const sliderFillPct = Math.min((monthlyReturn / 10) * 100, 100);
 
   return (
     <div>
@@ -78,25 +80,35 @@ export default function PayoutView() {
                   max={100}
                   step={0.1}
                   onChange={e => {
-                    const v = parseFloat(e.target.value);
+                    const raw = e.target.value;
+                    if (raw === '' || raw === '.') { setMonthlyReturn(0); return; }
+                    const v = parseFloat(raw);
                     if (!isNaN(v) && v >= 0) setMonthlyReturn(v);
                   }}
+                  onFocus={e => e.target.select()}
                 />
                 <span className={styles.customInlineSuffix}>%</span>
               </div>
             </div>
-            <div className={styles.sliderTrack}>
-              <div className={styles.sliderFill} style={{ width: `${sliderFillPct}%` }} />
-              <input
-                type="range"
-                className={styles.slider}
-                min={0}
-                max={10}
-                step={0.5}
-                value={Math.min(monthlyReturn, 10)}
-                onChange={e => setMonthlyReturn(parseFloat(e.target.value))}
-              />
-            </div>
+            <WakeSlider
+              value={Math.min(monthlyReturn, 10)}
+              min={0}
+              max={10}
+              step={0.5}
+              bars={28}
+              height={48}
+              restHeight={10}
+              gap={3}
+              fillColor={theme === 'light' ? '#18181b' : '#fafafa'}
+              trackColor={theme === 'light' ? '#e4e4e7' : '#27272a'}
+              sensitivity={1}
+              reach={6}
+              skew={0.6}
+              glide={0.3}
+              smoothing={100}
+              ariaLabel="Monthly Return"
+              onChange={v => setMonthlyReturn(v)}
+            />
             <div className={styles.sliderTicks}>
               <span className={styles.sliderTick}>0%</span>
               <span className={styles.sliderTick}>5%</span>
@@ -159,9 +171,12 @@ export default function PayoutView() {
                   step={1}
                   placeholder="Enter %"
                   onChange={e => {
-                    const v = parseFloat(e.target.value);
+                    const raw = e.target.value;
+                    if (raw === '' || raw === '.') { setProfitSplit(0); return; }
+                    const v = parseFloat(raw);
                     if (!isNaN(v) && v >= 0 && v <= 100) setProfitSplit(v);
                   }}
+                  onFocus={e => e.target.select()}
                 />
                 <span className={styles.customInputSuffix}>%</span>
               </div>
